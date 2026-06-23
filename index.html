@@ -211,6 +211,24 @@ button,input,select,textarea{font:inherit} button{cursor:pointer}
   }
 }
 
+
+.profile-card{cursor:pointer}
+.profile-answers{display:none}
+.profile-summary{margin-top:12px;padding:10px 11px;border-radius:13px;background:rgba(255,255,255,.72);color:#667085;font-size:10px;line-height:1.5;min-height:46px}
+.profile-open-hint{display:inline-flex;margin-top:10px;padding:6px 9px;border-radius:999px;background:rgba(177,180,221,.15);color:#6d6a9f;font-size:9px;font-weight:900}
+.profile-detail{display:grid;gap:14px}
+.profile-detail-head{display:flex;align-items:center;gap:14px}
+.profile-detail-photo{width:92px;height:92px;border-radius:24px;object-fit:cover;background:#f8fafc;border:2px solid rgba(255,255,255,.95);box-shadow:0 14px 30px rgba(148,163,184,.18)}
+.profile-detail-fallback{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;color:#fff;font-size:30px;font-weight:900;background:var(--detail-color,#B1B4DD);box-shadow:0 14px 30px rgba(148,163,184,.18)}
+.profile-detail-head h3{font-size:24px;letter-spacing:-.05em}
+.profile-detail-head p{margin-top:5px;color:#8a94a6;font-size:11px}
+.profile-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.profile-detail-item{padding:15px;border-radius:16px;background:rgba(248,250,252,.82);border:1px solid rgba(255,255,255,.88)}
+.profile-detail-item b{display:block;margin-bottom:6px;color:#475569;font-size:11px}
+.profile-detail-item span{color:#667085;font-size:13px;line-height:1.6}
+.profile-detail-item.full{grid-column:1/-1}
+@media(max-width:700px){.profile-detail-grid{grid-template-columns:1fr}.profile-detail-item.full{grid-column:auto}}
+
 .profile-zone{margin-top:16px}
 .profile-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:12px}
 .profile-head h3{font-size:17px;letter-spacing:-.04em}.profile-head p{margin-top:3px;font-size:10px;color:var(--sub)}
@@ -252,7 +270,7 @@ button,input,select,textarea{font:inherit} button{cursor:pointer}
   <section class="hero glass">
     <div class="hero-copy">
       <span class="kicker">✨ STAFF ONLY · OUR STORE, OUR STYLE</span>
-      <h2>여기는 <span>K GENIE POP 매장을 함께 만들어가는 직원 커뮤니케이션 HUB입니다.</span></h2>
+      <h2> <span>K GENIE POP 매장을 함께 만들어가는 직원 커뮤니케이션 HUB입니다.</span></h2>
       <p>매장 이야기가 여기저기 흩어지면 결국 아무도 모릅니다.<br>그래서 여기 다 모았습니다.</p>
     </div>
     <div class="hero-stats">
@@ -352,6 +370,23 @@ button,input,select,textarea{font:inherit} button{cursor:pointer}
       </div>
     </div>
     <div class="modal-foot"><button class="ghost" id="cancelBtn">취소</button><button class="primary" id="saveBtn">톡! 남기기</button></div>
+  </div>
+</div>
+
+
+<div class="modal-wrap" id="profileDetailModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>이 직원 사용설명서</h3>
+      <button class="close" id="profileDetailCloseBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="profile-detail" id="profileDetailContent"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="ghost" id="profileDetailEditBtn">내 프로필이라면 수정하기</button>
+      <button class="primary" id="profileDetailDoneBtn">다 봤어요</button>
+    </div>
   </div>
 </div>
 
@@ -531,25 +566,51 @@ function renderProfiles(){
  const box=document.getElementById("profileGrid"); if(!box)return;
  box.innerHTML=staff.map(s=>{
    const p=profiles[safeKey(s.name)]||{};
-   const extra=Object.entries(p.customAnswers||{}).slice(0,2).map(([qid,ans])=>{
-     const q=questions[qid]?.text||"추가 질문";
-     return `<div class="answer-chip"><b>${esc(q)}</b><br>${esc(ans||"-")}</div>`;
-   }).join("");
-   return `<div class="profile-card" style="--pc:${s.color}">
-     <div class="profile-top">${p.photoData?`<img class="profile-photo" src="${p.photoData}" alt="${esc(s.short)} 프로필">`:`<div class="profile-photo-fallback">${s.short.slice(0,1)}</div>`}<div><strong>${s.short}</strong><span>${s.role}</span></div></div>
-     <div class="profile-answers">
-       <div class="answer-chip"><b>🎂 🎂 케이크 먹을 명분이 생기는 날</b> ${esc(p.birthday||"아직 비밀")}</div>
-       <div class="answer-chip"><b>🍪 🍪 이거 주면 기분 풀림</b> ${esc(p.snack||"아직 미정")}</div>
-       <div class="answer-chip"><b>⚡ 나랑 일할 때 참고사항</b> ${esc(p.workStyle||"궁금해요")}</div>
-       <div class="answer-chip"><b>😵 이때 말 걸면 로딩 중</b> ${esc(p.tiredTime||"아직 몰라요")}</div>
-       <div class="answer-chip"><b>☕ 쉬는 척하며 하는 것</b> ${esc(p.breakTime||"아직 미정")}</div>
-       <div class="answer-chip"><b>🏃 🏃 돈 내고 굳이 힘드는 일</b> ${esc(p.exercise||"아직 미정")}</div>
-       ${extra}
+   const summary=p.oneLine||p.workStyle||"아직 사용설명서를 작성하지 않았어요.";
+   return `<div class="profile-card" data-profile-name="${s.name}" style="--pc:${s.color}">
+     <div class="profile-top">
+       ${p.photoData?`<img class="profile-photo" src="${p.photoData}" alt="${esc(s.short)} 프로필">`:`<div class="profile-photo-fallback">${s.short.slice(0,1)}</div>`}
+       <div><strong>${s.short}</strong><span>${s.role}</span></div>
      </div>
-     <div class="profile-actions"><button onclick="openProfile('${s.name}')">내 사용설명서 쓰기</button></div>
+     <div class="profile-summary">${esc(summary)}</div>
+     <span class="profile-open-hint">눌러서 크게 보기 →</span>
+     <div class="profile-actions">
+       <button type="button" data-edit-profile="${s.name}">내 사용설명서 쓰기</button>
+     </div>
    </div>`;
  }).join("");
 }
+
+let activeProfileDetailName="";
+
+function openProfileDetail(name){
+  const s=staff.find(x=>x.name===name);
+  if(!s)return;
+  const p=profiles[safeKey(name)]||{};
+  const custom=Object.entries(p.customAnswers||{}).map(([qid,ans])=>{
+    const q=questions[qid]?.text||"추가 질문";
+    return `<div class="profile-detail-item full"><b>${esc(q)}</b><span>${esc(ans||"아직 답하지 않았어요.")}</span></div>`;
+  }).join("");
+
+  profileDetailContent.innerHTML=`
+    <div class="profile-detail-head">
+      ${p.photoData?`<img class="profile-detail-photo" src="${p.photoData}" alt="${esc(s.short)} 프로필">`:`<div class="profile-detail-fallback" style="--detail-color:${s.color}">${s.short.slice(0,1)}</div>`}
+      <div><h3>${esc(s.short)}</h3><p>${esc(s.role)}</p></div>
+    </div>
+    <div class="profile-detail-grid">
+      <div class="profile-detail-item"><b>🎂 케이크 먹을 명분이 생기는 날</b><span>${esc(p.birthday||"아직 비밀")}</span></div>
+      <div class="profile-detail-item"><b>🍪 이거 주면 기분 풀림</b><span>${esc(p.snack||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>⚡ 나랑 일할 때 참고사항</b><span>${esc(p.workStyle||"궁금해요")}</span></div>
+      <div class="profile-detail-item"><b>😵 이때 말 걸면 로딩 중</b><span>${esc(p.tiredTime||"아직 몰라요")}</span></div>
+      <div class="profile-detail-item"><b>☕ 쉬는 척하며 하는 것</b><span>${esc(p.breakTime||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🏃 돈 내고 굳이 힘드는 일</b><span>${esc(p.exercise||"아직 미정")}</span></div>
+      <div class="profile-detail-item full"><b>📖 사용설명서 한 줄 요약</b><span>${esc(p.oneLine||"아직 작성하지 않았어요.")}</span></div>
+      ${custom}
+    </div>`;
+  activeProfileDetailName=name;
+  profileDetailModal.classList.add("show");
+}
+
 function openProfile(name){
  profileStaffInput.value=name||"";
  loadProfileForm(name);
@@ -607,6 +668,23 @@ allBtn.addEventListener("click",()=>selectMember("ALL"));
 menu.addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;currentCat=b.dataset.cat;document.querySelectorAll("#menu button").forEach(x=>x.classList.remove("active"));b.classList.add("active");boardTitle.textContent=cats[currentCat][0];boardDesc.textContent=cats[currentCat][1];renderList()});
 document.querySelectorAll(".quick-card").forEach(b=>b.addEventListener("click",()=>{currentCat=b.dataset.quick;document.querySelectorAll("#menu button").forEach(x=>x.classList.toggle("active",x.dataset.cat===currentCat));boardTitle.textContent=cats[currentCat][0];boardDesc.textContent=cats[currentCat][1];renderList()}));
 newBtn.addEventListener("click",openModal);closeBtn.addEventListener("click",closeModal);cancelBtn.addEventListener("click",closeModal);saveBtn.addEventListener("click",saveItem);catInput.addEventListener("change",updateForm);search.addEventListener("input",renderList);statusFilter.addEventListener("change",renderList);priorityFilter.addEventListener("change",renderList);modal.addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+
+
+profileGrid.addEventListener("click",e=>{
+  const editBtn=e.target.closest("[data-edit-profile]");
+  if(editBtn){e.stopPropagation();openProfile(editBtn.dataset.editProfile);return}
+  const card=e.target.closest("[data-profile-name]");
+  if(card)openProfileDetail(card.dataset.profileName);
+});
+profileDetailCloseBtn.addEventListener("click",()=>profileDetailModal.classList.remove("show"));
+profileDetailDoneBtn.addEventListener("click",()=>profileDetailModal.classList.remove("show"));
+profileDetailEditBtn.addEventListener("click",()=>{
+  profileDetailModal.classList.remove("show");
+  if(activeProfileDetailName)openProfile(activeProfileDetailName);
+});
+profileDetailModal.addEventListener("click",e=>{
+  if(e.target.id==="profileDetailModal")profileDetailModal.classList.remove("show");
+});
 
 profileStaffInput.addEventListener("change",()=>loadProfileForm(profileStaffInput.value));
 
