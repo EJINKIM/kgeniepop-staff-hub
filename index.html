@@ -1,1104 +1,151 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>K GENIE POP STAFF HUB</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#f8fbff; --card:rgba(255,255,255,.72); --strong:rgba(255,255,255,.92);
-  --line:rgba(148,163,184,.20); --text:#334155; --sub:#718096;
-  --mint:#26CCC2; --sky:#7DD3FC; --lav:#B1B4DD; --pink:#F6BFE6;
-  --yellow:#F4F0C0; --green:#7CCFB2; --danger:#EF7F91;
-  --shadow:0 22px 60px rgba(148,163,184,.20);
-}
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Noto Sans KR',sans-serif}
-body{
-  min-height:100vh;color:var(--text);
-  background:
-  radial-gradient(circle at 8% 7%,rgba(199,215,255,.78),transparent 28%),
-  radial-gradient(circle at 80% 6%,rgba(255,208,252,.65),transparent 30%),
-  radial-gradient(circle at 47% 48%,rgba(210,249,254,.72),transparent 35%),
-  radial-gradient(circle at 88% 82%,rgba(244,240,192,.72),transparent 30%),
-  linear-gradient(135deg,#f7fbff 0%,#fff6fc 42%,#f5f9ff 100%);
-  background-attachment:fixed;
-}
-button,input,select,textarea{font:inherit} button{cursor:pointer}
-.wrap{max-width:1500px;margin:auto;padding:22px 28px 48px}
-.glass{background:var(--card);border:1px solid rgba(255,255,255,.85);backdrop-filter:blur(24px);box-shadow:var(--shadow)}
-.topbar{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px}
-.brand{display:flex;gap:14px;align-items:center}
-.logo{width:50px;height:50px;border-radius:18px;display:grid;place-items:center;color:white;font-weight:900;background:linear-gradient(135deg,var(--mint),var(--sky),var(--lav));box-shadow:0 14px 28px rgba(38,204,194,.24)}
-.brand small{display:block;font-size:11px;letter-spacing:.15em;color:#8b95a7;font-weight:900}
-.brand h1{font-size:24px;letter-spacing:-.05em;background:linear-gradient(90deg,#5d5b9e,#d985c2,#3caec2);-webkit-background-clip:text;color:transparent}
-.actions{display:flex;gap:9px;align-items:center}
-.pill,.ghost,.primary{border-radius:15px;padding:11px 15px;font-size:12px;font-weight:800}
-.pill,.ghost{background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.92);color:#64748b}
-.primary{border:none;color:#fff;background:linear-gradient(135deg,var(--mint),var(--sky),var(--lav));box-shadow:0 12px 26px rgba(38,204,194,.22)}
+from pathlib import Path
+import re
 
-.hero{border-radius:30px;padding:25px;margin-bottom:18px;display:grid;grid-template-columns:1.45fr .8fr;gap:18px;overflow:hidden;position:relative}
-.hero:after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;right:-110px;top:-150px;background:radial-gradient(circle,rgba(246,191,230,.45),transparent 68%)}
-.hero-copy,.hero-stats{position:relative;z-index:2}
-.kicker{display:inline-flex;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.64);font-size:11px;font-weight:900;color:#6d6a9f}
-.hero h2{margin-top:15px;font-size:36px;line-height:1.25;letter-spacing:-.06em}
-.hero h2 span{background:linear-gradient(90deg,#56cdbf,#7cbfe8,#bd95d9,#ef9fcb);-webkit-background-clip:text;color:transparent}
-.hero p{margin-top:10px;color:#6f7b8f;font-size:13px;line-height:1.7}
-.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.88);border-radius:20px;padding:16px}
-.stat small{font-size:10px;color:#8490a3}.stat strong{display:block;margin-top:5px;font-size:25px}
+src = Path("/mnt/data/kgeniepop_staff_hub_buttons_fixed.html")
+text = src.read_text(encoding="utf-8")
 
-.pass{border-radius:26px;padding:19px;margin-bottom:18px}
-.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;margin-bottom:14px}
-.section-head h3{font-size:18px;letter-spacing:-.04em}.section-head p{margin-top:3px;font-size:11px;color:var(--sub)}
-.member-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
-.member{border:none;text-align:left;padding:15px;border-radius:20px;background:rgba(255,255,255,.61);border:1px solid rgba(255,255,255,.88);position:relative;overflow:hidden;transition:.2s}
-.member:hover,.member.active{transform:translateY(-3px);box-shadow:0 16px 34px rgba(148,163,184,.18)}
-.member.active{outline:3px solid color-mix(in srgb,var(--c) 45%,transparent)}
-.avatar{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;color:#fff;background:var(--c);font-weight:900}
-.member strong{display:block;margin-top:10px;font-size:14px}.member span{font-size:10px;color:#8a94a6}.member b{display:inline-block;margin-top:8px;font-size:9px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.8);color:#667085}
+# Make profile editor modal sit above detail modal.
+text = text.replace(
+    ".modal-wrap.show{display:flex}",
+    ".modal-wrap.show{display:flex}\n#profileModal{z-index:130}\n#profileDetailModal{z-index:120}"
+)
 
-.grid{display:grid;grid-template-columns:240px 1fr;gap:16px}
-.side{border-radius:24px;padding:14px;align-self:start;position:sticky;top:14px}
-.side-title{padding:8px 9px 12px;font-size:10px;letter-spacing:.12em;color:#98a2b3;font-weight:900}
-.menu{display:grid;gap:7px}
-.menu button{border:none;background:transparent;border-radius:14px;padding:12px 13px;display:flex;justify-content:space-between;color:#64748b;font-size:12px;font-weight:800}
-.menu button.active,.menu button:hover{background:rgba(255,255,255,.76);color:#4f5d75}
-.count{padding:2px 7px;border-radius:999px;background:rgba(177,180,221,.17);font-size:9px}
+# Add direct onclick fallback to the detail edit button.
+text = text.replace(
+    '<button class="profile-detail-edit-primary" id="profileDetailEditBtn">✏️ 내 문답 수정하기</button>',
+    '<button type="button" class="profile-detail-edit-primary" id="profileDetailEditBtn" onclick="switchToProfileEditor(event)">✏️ 내 문답 수정하기</button>'
+)
 
-.main{min-width:0}
-.today{border-radius:24px;padding:20px;margin-bottom:14px;background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(210,249,254,.36));border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow)}
-.today-top{display:flex;justify-content:space-between;gap:10px;font-size:10px;font-weight:900;color:#7b789d;letter-spacing:.08em}
-.today h3{margin-top:8px;font-size:21px}.today p{margin-top:7px;font-size:12px;color:#6f7b8f;line-height:1.65}
-.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
-.quick-card{border:none;border-radius:20px;padding:16px;text-align:left;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.88);box-shadow:0 10px 25px rgba(148,163,184,.13)}
-.quick-card b{font-size:12px}.quick-card span{display:block;margin-top:4px;font-size:10px;color:#8792a3}
+# Direct onclick fallback for profile card edit buttons generated in JS.
+text = text.replace(
+    '<button type="button" data-edit-profile="${s.name}">내 사용설명서 쓰기</button>',
+    '<button type="button" data-edit-profile="${s.name}" onclick="openProfileFromButton(event, \'${s.name}\')">내 문답 수정하기</button>'
+)
 
-.board{border-radius:24px;overflow:hidden}
-.toolbar{padding:17px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line)}
-.toolbar h3{font-size:17px}.toolbar p{font-size:10px;color:var(--sub);margin-top:3px}
-.filters{display:flex;gap:7px;flex-wrap:wrap}
-.search,.filter{border:1px solid rgba(203,213,225,.62);background:rgba(255,255,255,.78);border-radius:12px;padding:9px 11px;font-size:11px;color:#475569;outline:none}
-.search{width:220px}
-.head,.row{display:grid;grid-template-columns:95px 1.6fr 115px 90px 140px;gap:10px;align-items:center}
-.head{padding:11px 17px;background:rgba(248,250,252,.75);font-size:9px;color:#98a2b3;font-weight:900}
-.row{padding:15px 17px;border-top:1px solid var(--line);background:rgba(255,255,255,.48)}
-.badge{display:inline-flex;width:max-content;padding:5px 8px;border-radius:999px;font-size:9px;font-weight:900}
-.cat-directive{background:rgba(177,180,221,.22);color:#6b69a4}.cat-handover{background:rgba(125,211,252,.24);color:#2c8ab0}.cat-supply{background:rgba(244,240,192,.5);color:#9b7b1b}.cat-inventory{background:rgba(124,207,178,.22);color:#2c8a68}.cat-suggestion{background:rgba(246,191,230,.28);color:#b65c99}.cat-praise{background:rgba(255,220,170,.35);color:#bb7a13}
-.s-open{background:rgba(239,127,145,.16);color:#c45d70}.s-progress{background:rgba(125,211,252,.22);color:#2f88aa}.s-done{background:rgba(124,207,178,.2);color:#2d8f6b}.s-hold{background:rgba(148,163,184,.16);color:#667085}
-.copy strong{display:block;font-size:12px}.copy p{margin-top:4px;font-size:10px;color:#7b8798;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.meta{font-size:10px;color:#667085}.actions2{display:flex;gap:4px;justify-content:flex-end;flex-wrap:wrap}
-.icon{border:1px solid rgba(203,213,225,.58);background:rgba(255,255,255,.72);border-radius:9px;padding:6px 7px;font-size:9px;color:#64748b;font-weight:800}
-.empty{padding:44px 20px;text-align:center;color:#8a94a6;font-size:11px}
+# Replace openProfile with a robust version and add explicit switching helpers.
+start = text.index("function openProfile(name){")
+end = text.index("function loadProfileForm(name){", start)
 
-.modal-wrap{position:fixed;inset:0;background:rgba(51,65,85,.34);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}
-.modal-wrap.show{display:flex}.modal{width:min(680px,100%);max-height:92vh;overflow:auto;border-radius:26px;background:rgba(255,255,255,.94);box-shadow:0 34px 90px rgba(71,85,105,.3)}
-.modal-head,.modal-foot{padding:18px 20px;display:flex;justify-content:space-between;align-items:center}.modal-head{border-bottom:1px solid var(--line)}.modal-foot{justify-content:flex-end;gap:8px}
-.modal-body{padding:20px}.form{display:grid;grid-template-columns:1fr 1fr;gap:13px}.group{display:grid;gap:6px}.group.full{grid-column:1/-1}.group label{font-size:10px;font-weight:900;color:#475569}
-.group input,.group select,.group textarea{width:100%;border:1px solid rgba(203,213,225,.66);background:#fff;border-radius:13px;padding:11px;font-size:11px;outline:none}.group textarea{min-height:120px;resize:vertical}.helper{font-size:9px;color:#8a94a6;line-height:1.5}
-.close{border:none;background:transparent;font-size:22px;color:#94a3b8}
-.toast{position:fixed;right:22px;bottom:22px;padding:12px 15px;border-radius:13px;background:#475569;color:#fff;font-size:11px;opacity:0;transform:translateY(8px);transition:.2s;z-index:200}.toast.show{opacity:1;transform:none}
-
-
-
-.profile-photo{width:64px;height:64px;border-radius:18px;object-fit:cover;display:block;background:rgba(255,255,255,.7);border:2px solid rgba(255,255,255,.95);box-shadow:0 10px 24px rgba(148,163,184,.18)}
-.profile-photo-fallback{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;background:var(--pc);box-shadow:0 10px 24px rgba(148,163,184,.18)}
-.photo-preview-wrap{display:flex;align-items:center;gap:12px}
-.photo-preview{width:86px;height:86px;border-radius:20px;object-fit:cover;background:#f8fafc;border:1px solid rgba(203,213,225,.66)}
-
-
-
-.staff-pass-section{
-  position:relative;
-  z-index:5;
-}
-.staff-pass-section::before{
-  content:"직원 이름 탭";
-  display:inline-flex;
-  margin-bottom:10px;
-  padding:5px 9px;
-  border-radius:999px;
-  background:rgba(255,255,255,.78);
-  color:#7a739c;
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:.05em;
-}
-.member-grid{
-  position:relative;
-  z-index:2;
-}
-.member{
-  min-height:118px;
-}
-.member strong{
-  font-size:15px;
-}
-
-.menu-sub{
-  display:block;
-  margin-top:3px;
-  font-size:9px;
-  font-weight:700;
-  color:#98a2b3;
-  letter-spacing:-.02em;
-}
-.menu button{
-  align-items:flex-start;
-}
-.menu button .count{
-  flex:0 0 auto;
-  margin-top:2px;
-}
-.profile-card{
-  animation:profilePop .55s cubic-bezier(.2,.9,.25,1) both;
-}
-.profile-card:nth-child(2){animation-delay:.05s}
-.profile-card:nth-child(3){animation-delay:.10s}
-.profile-card:nth-child(4){animation-delay:.15s}
-.profile-card:nth-child(5){animation-delay:.20s}
-.profile-card:nth-child(6){animation-delay:.25s}
-.profile-card:nth-child(7){animation-delay:.30s}
-.profile-card:nth-child(8){animation-delay:.35s}
-.profile-card:hover{
-  transform:translateY(-7px) rotate(-.5deg);
-}
-.profile-card:nth-child(even):hover{
-  transform:translateY(-7px) rotate(.5deg);
-}
-.profile-avatar,.profile-photo,.profile-photo-fallback{
-  animation:floaty 3.2s ease-in-out infinite;
-}
-.answer-chip{
-  opacity:0;
-  transform:translateY(8px);
-  animation:chipIn .4s ease forwards;
-}
-.answer-chip:nth-child(1){animation-delay:.08s}
-.answer-chip:nth-child(2){animation-delay:.13s}
-.answer-chip:nth-child(3){animation-delay:.18s}
-.answer-chip:nth-child(4){animation-delay:.23s}
-.answer-chip:nth-child(5){animation-delay:.28s}
-.answer-chip:nth-child(6){animation-delay:.33s}
-.profile-card:hover .answer-chip{
-  background:rgba(255,255,255,.9);
-  transform:translateY(-1px);
-}
-.profile-actions button{
-  transition:.18s ease;
-}
-.profile-actions button:hover{
-  transform:translateY(-2px) scale(1.03);
-  box-shadow:0 8px 18px rgba(148,163,184,.18);
-}
-@keyframes profilePop{
-  0%{opacity:0;transform:translateY(18px) scale(.96)}
-  100%{opacity:1;transform:translateY(0) scale(1)}
-}
-@keyframes chipIn{
-  to{opacity:1;transform:translateY(0)}
-}
-@keyframes floaty{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-4px)}
-}
-@media (prefers-reduced-motion: reduce){
-  .profile-card,.profile-avatar,.profile-photo,.profile-photo-fallback,.answer-chip{
-    animation:none!important;
-    transition:none!important;
-  }
-}
-
-
-.profile-card{cursor:pointer}
-.profile-answers{display:none}
-.profile-summary{margin-top:12px;padding:10px 11px;border-radius:13px;background:rgba(255,255,255,.72);color:#667085;font-size:10px;line-height:1.5;min-height:46px}
-.profile-open-hint{display:inline-flex;margin-top:10px;padding:6px 9px;border-radius:999px;background:rgba(177,180,221,.15);color:#6d6a9f;font-size:9px;font-weight:900}
-.profile-detail{display:grid;gap:14px}
-.profile-detail-head{display:flex;align-items:center;gap:14px}
-.profile-detail-photo{width:92px;height:92px;border-radius:24px;object-fit:cover;background:#f8fafc;border:2px solid rgba(255,255,255,.95);box-shadow:0 14px 30px rgba(148,163,184,.18)}
-.profile-detail-fallback{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;color:#fff;font-size:30px;font-weight:900;background:var(--detail-color,#B1B4DD);box-shadow:0 14px 30px rgba(148,163,184,.18)}
-.profile-detail-head h3{font-size:24px;letter-spacing:-.05em}
-.profile-detail-head p{margin-top:5px;color:#8a94a6;font-size:11px}
-.profile-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.profile-detail-item{padding:15px;border-radius:16px;background:rgba(248,250,252,.82);border:1px solid rgba(255,255,255,.88)}
-.profile-detail-item b{display:block;margin-bottom:6px;color:#475569;font-size:11px}
-.profile-detail-item span{color:#667085;font-size:13px;line-height:1.6}
-.profile-detail-item.full{grid-column:1/-1}
-@media(max-width:700px){.profile-detail-grid{grid-template-columns:1fr}.profile-detail-item.full{grid-column:auto}}
-
-.profile-zone{margin-top:16px}
-.profile-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:12px}
-.profile-head h3{font-size:17px;letter-spacing:-.04em}.profile-head p{margin-top:3px;font-size:10px;color:var(--sub)}
-.profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.profile-card{border-radius:20px;padding:16px;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.88);box-shadow:0 10px 25px rgba(148,163,184,.13)}
-.profile-top{display:flex;gap:10px;align-items:center}
-.profile-avatar{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:900;background:var(--pc)}
-.profile-top strong{font-size:13px}.profile-top span{display:block;font-size:9px;color:#8a94a6;margin-top:2px}
-.profile-answers{display:grid;gap:7px;margin-top:12px}
-.answer-chip{padding:9px 10px;border-radius:13px;background:rgba(255,255,255,.72);font-size:10px;color:#667085;line-height:1.45}
-.answer-chip b{color:#475569}
-.profile-actions{display:flex;gap:6px;margin-top:12px}
-.profile-actions button{border:1px solid rgba(203,213,225,.58);background:rgba(255,255,255,.75);border-radius:10px;padding:7px 9px;font-size:9px;color:#64748b;font-weight:800}
-.question-list{display:grid;gap:8px;margin-top:10px}
-.question-row{padding:10px;border-radius:13px;background:rgba(248,250,252,.78);font-size:10px;color:#667085}
-
-@media(max-width:1100px){
-  .member-grid{grid-template-columns:repeat(3,1fr)} .profile-grid{grid-template-columns:repeat(2,1fr)} .hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.side{position:static}.menu{grid-template-columns:repeat(3,1fr)}.head{display:none}.row{grid-template-columns:1fr}.actions2{justify-content:flex-start}
-}
-@media(max-width:700px){
-  .wrap{padding:14px 11px 34px}.topbar{align-items:flex-start;flex-direction:column}.actions{width:100%;justify-content:space-between}.pill{display:none}.hero{padding:19px}.hero h2{font-size:27px}.member-grid{grid-template-columns:repeat(2,1fr)} .profile-grid{grid-template-columns:1fr}.quick{grid-template-columns:1fr 1fr}.menu{grid-template-columns:1fr 1fr}.toolbar{flex-direction:column}.search{width:100%}.filters{width:100%}.filter{flex:1}.form{grid-template-columns:1fr}.group.full{grid-column:auto}
-}
-
-/* ===== 가독성·프로필 수정 UX 보강 ===== */
-body{font-size:16px}
-.brand small{font-size:13px}
-.kicker{font-size:13px}
-.hero p{font-size:16px;line-height:1.8}
-.stat small{font-size:13px}
-.section-head h3,.profile-head h3{font-size:22px}
-.section-head p,.profile-head p{font-size:14px;line-height:1.6}
-.member strong{font-size:17px}
-.member span{font-size:13px}
-.member b{font-size:11px}
-.side-title{font-size:12px}
-.menu button{font-size:14px;line-height:1.35}
-.menu-sub{font-size:11px}
-.count{font-size:11px}
-.today-top{font-size:12px}
-.today h3{font-size:24px}
-.today p{font-size:15px}
-.quick-card b{font-size:15px}
-.quick-card span{font-size:12px;line-height:1.5}
-.toolbar h3{font-size:21px}
-.toolbar p{font-size:13px}
-.search,.filter{font-size:14px;padding:12px 13px}
-.head{font-size:11px}
-.badge{font-size:11px;padding:7px 10px}
-.copy strong{font-size:15px}
-.copy p{font-size:13px;line-height:1.65}
-.meta{font-size:12px;line-height:1.55}
-.icon{font-size:11px;padding:8px 9px}
-.empty{font-size:14px}
-
-.modal{width:min(760px,96vw)}
-.modal-head h3{font-size:22px}
-.modal-body{padding:26px}
-.group{gap:9px}
-.group label{font-size:14px}
-.group input,.group select,.group textarea{
-  font-size:16px;
-  padding:14px 15px;
-  border-radius:15px;
-}
-.group textarea{min-height:150px}
-.helper{font-size:12px;line-height:1.65}
-.modal-foot .ghost,.modal-foot .primary{
-  font-size:14px;
-  padding:13px 18px;
-}
-
-.profile-card{padding:19px}
-.profile-top strong{font-size:17px}
-.profile-top span{font-size:12px}
-.profile-summary{font-size:14px;line-height:1.65;min-height:58px}
-.profile-open-hint{font-size:12px;padding:8px 11px}
-.profile-actions button{font-size:12px;padding:9px 11px}
-
-.profile-detail-head h3{font-size:29px}
-.profile-detail-head p{font-size:14px}
-.profile-detail-item{padding:18px}
-.profile-detail-item b{font-size:14px;margin-bottom:8px}
-.profile-detail-item span{font-size:16px;line-height:1.75}
-
-.question-row{
-  padding:14px;
-  font-size:14px;
-}
-.question-row label{
-  display:block;
-  margin-bottom:8px;
-  font-size:14px;
-  font-weight:800;
-}
-.question-row input{
-  font-size:15px;
-  padding:13px 14px;
-}
-
-.profile-edit-banner{
-  margin-bottom:18px;
-  padding:15px 17px;
-  border-radius:16px;
-  background:linear-gradient(135deg,rgba(210,249,254,.62),rgba(246,191,230,.30));
-  color:#526076;
-  font-size:14px;
-  line-height:1.65;
-  font-weight:700;
-}
-.profile-edit-banner strong{
-  color:#5e5c91;
-}
-.profile-detail-edit-primary{
-  border:none;
-  color:#fff;
-  border-radius:14px;
-  padding:13px 18px;
-  font-size:14px;
-  font-weight:900;
-  background:linear-gradient(135deg,var(--mint),var(--sky),var(--lav));
-  box-shadow:0 12px 25px rgba(38,204,194,.22);
-}
-@media(max-width:700px){
-  body{font-size:15px}
-  .hero p{font-size:15px}
-  .modal-body{padding:19px}
-  .group input,.group select,.group textarea{font-size:16px}
-  .profile-detail-item span{font-size:15px}
-}
-
-
-.profile-detail-item b small{
-  font-size:11px;
-  color:#98a2b3;
-  font-weight:700;
-}
-.group label .helper{
-  display:inline;
-  margin-left:4px;
-  font-size:11px;
-  font-weight:700;
-}
-
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">KG</div>
-      <div><small>K-GENIE POP POP-UP STORE STAFF HUB</small><h1>K GENIE POP STAFF HUB</h1></div>
-    </div>
-    <div class="actions">
-      <span class="pill" id="conn">시스템 연결 중</span>
-      <button class="ghost" id="allBtn">모두 보기</button>
-      <button class="primary" id="newBtn">+ 이야기 남기기</button>
-    </div>
-  </header>
-
-  <section class="hero glass">
-    <div class="hero-copy">
-      <span class="kicker">✨ STAFF ONLY · OUR STORE, OUR STYLE</span>
-      <h2><span>K GENIE POP 매장을 함께 만들어가는 직원 커뮤니케이션 HUB입니다.</span></h2>
-      <p>매장 이야기가 여기저기 흩어지면 결국 아무도 모릅니다.<br>그래서 여기 다 모았습니다.</p>
-    </div>
-    <div class="hero-stats">
-      <div class="stat"><small>오늘 뭐 올라왔지</small><strong id="todayCount">0</strong></div>
-      <div class="stat"><small>지금 누가 하고 있지</small><strong id="progressCount">0</strong></div>
-      <div class="stat"><small>나한테 온 말</small><strong id="mineCount">0</strong></div>
-      <div class="stat"><small>안 보면 곤란한 것</small><strong id="urgentCount">0</strong></div>
-    </div>
-  </section>
-
-  <section class="pass glass staff-pass-section">
-    <div class="section-head">
-      <div><h3>MY STAFF PASS</h3><p>여기서 내 이름을 누르면, 나한테 필요한 이야기만 보여드립니다.</p></div>
-    </div>
-    <div class="member-grid" id="members"></div>
-  </section>
-
-  <section class="grid">
-    <aside class="side glass">
-      <div class="side-title">STAFF TALK MENU</div>
-      <div class="menu" id="menu">
-        <button class="active" data-cat="all">모아보기 <span class="count" id="cAll">0</span></button>
-        <button data-cat="directive"><span>안 보면 곤란해요<span class="menu-sub">(오늘의 소식)</span></span> <span class="count" id="cDirective">0</span></button>
-        <button data-cat="handover"><span>나만 알기 아까워요<span class="menu-sub">(전달사항)</span></span> <span class="count" id="cHandover">0</span></button>
-        <button data-cat="supply"><span>참다가 사지 마세요<span class="menu-sub">(필요 비품)</span></span> <span class="count" id="cSupply">0</span></button>
-        <button data-cat="inventory"><span>마지막 하나 전에<span class="menu-sub">(재고 체크)</span></span> <span class="count" id="cInventory">0</span></button>
-        <button data-cat="praise"><span>칭찬은 바로바로<span class="menu-sub">(칭찬 보관함)</span></span> <span class="count" id="cPraise">0</span></button>
-        <button data-cat="suggestion"><span>🎋 대나무숲<span class="menu-sub">(이름은 숨겨드려요·건의)</span></span> <span class="count" id="cSuggestion">0</span></button>
-      </div>
-    </aside>
-
-    <main class="main">
-      <section class="today">
-        <div class="today-top"><span>TODAY'S MUST CHECK</span><span id="viewLabel">ALL STAFF</span></div>
-        <h3 id="todayTitle">안 봤다는 말은 내일 못 써요</h3>
-        <p id="todayText">오늘 등록된 내용이 없어요.</p>
-      </section>
-
-      <section class="quick">
-        <button class="quick-card" data-quick="directive"><b>📌 안 보면 곤란</b><span>저 몰랐는데요 금지</span></button>
-        <button class="quick-card" data-quick="inventory"><b>📦 마지막 하나 전에 <span class="menu-sub">(재고 체크)</span></b><span>발견한 사람이 영웅</span></button>
-        <button class="quick-card" data-quick="supply"><b>🛍️ 참다가 사지 마세요 <span class="menu-sub">(필요 비품)</span></b><span>내 돈 쓰기 전에 여기</span></button>
-        <button class="quick-card" data-quick="praise"><b>💖 칭찬은 바로바로 <span class="menu-sub">(칭찬 보관함)</span></b><span>아끼면 유통기한 지남</span></button>
-      </section>
-
-      <section class="board glass">
-        <div class="toolbar">
-          <div><h3 id="boardTitle">모아보기</h3><p id="boardDesc">나중에 몰랐다고 하기 전에 여기서 한 번 봅니다.</p></div>
-          <div class="filters">
-            <input class="search" id="search" placeholder="제목 또는 내용 검색">
-            <select class="filter" id="statusFilter"><option value="all">전체 상태</option><option value="open">미처리</option><option value="progress">진행 중</option><option value="done">완료</option><option value="hold">보류</option></select>
-            <select class="filter" id="priorityFilter"><option value="all">전체 중요도</option><option value="urgent">긴급</option><option value="normal">보통</option><option value="low">여유</option></select>
-          </div>
-        </div>
-        <div class="head"><div>구분</div><div>제목 및 내용</div><div>대상 / 작성자</div><div>마감</div><div style="text-align:right">관리</div></div>
-        <div id="list"></div>
-      </section>
-
-      <section class="profile-zone">
-        <div class="profile-head">
-          <div>
-            <h3>같이 일하지만 아직 모르는 것들</h3>
-            <p>매일 보는데도 모르는 게 많더라고요. 그래서 살짝 캐물어봤습니다.</p>
-          </div>
-          <button class="ghost" id="newQuestionBtn">+ 질문 만들기</button>
-        </div>
-        <div class="profile-grid" id="profileGrid"></div>
-      </section>
-    </main>
-  </section>
-</div>
-
-<div class="modal-wrap" id="modal">
-  <div class="modal">
-    <div class="modal-head"><h3>K GENIE POP 이야기 남기기</h3><button class="close" id="closeBtn">&times;</button></div>
-    <div class="modal-body">
-      <div class="form">
-        <div class="group"><label>무슨 얘기인가요?</label>
-          <select id="catInput">
-            <option value="handover">매장 이야기 나만 알기 아까워요 <span class="menu-sub">(전달사항)</span></option>
-            <option value="supply">이거 없으면 곤란해요</option>
-            <option value="inventory">마지막 하나 남았어요</option>
-            <option value="praise">칭찬은 바로바로 <span class="menu-sub">(칭찬 보관함)</span></option>
-            <option value="suggestion">🎋 대나무숲 <span class="menu-sub">(이름은 숨겨드려요·건의)</span></option>
-            <option value="directive">안 보면 곤란한 내용</option>
-          </select>
-        </div>
-        <div class="group" id="authorGroup"><label>작성자</label><select id="authorInput"></select></div>
-        <div class="group full"><label>누가 꼭 봐야 하나요?</label><select id="targetInput"></select></div>
-        <div class="group"><label>중요도</label><select id="priorityInput"><option value="normal">보통</option><option value="urgent">긴급</option><option value="low">여유</option></select></div>
-        <div class="group"><label>마감일</label><input type="date" id="dueInput"></div>
-        <div class="group full"><label>제목은 짧고 굵게</label><input id="titleInput" maxlength="80" placeholder="길면 안 읽습니다. 한 줄이면 충분해요."></div>
-        <div class="group full"><label>그래서 무슨 일인가요?</label><textarea id="contentInput" maxlength="2000" placeholder="뭘, 어디서, 얼마나. 이 세 가지만 있어도 됩니다."></textarea></div>
-        <div class="group"><label>지금 어디까지 왔나요?</label><select id="statusInput"><option value="open">미처리</option><option value="progress">진행 중</option><option value="done">완료</option><option value="hold">보류</option></select></div>
-        <div class="group" id="pinGroup"><label>작성자 PIN</label><input type="password" id="pinInput" placeholder="내 PIN 번호를 입력해주세요"><div class="helper">본인 이름과 PIN이 일치해야 등록할 수 있어요.</div></div>
-        <div class="group full"><div class="helper" id="helper">본인 확인은 해야죠. 이름과 PIN을 맞춰주세요.</div></div>
-      </div>
-    </div>
-    <div class="modal-foot"><button class="ghost" id="cancelBtn">취소</button><button class="primary" id="saveBtn">톡! 남기기</button></div>
-  </div>
-</div>
-
-
-<div class="modal-wrap" id="profileDetailModal">
-  <div class="modal">
-    <div class="modal-head">
-      <h3>이 직원 사용설명서</h3>
-      <button class="close" id="profileDetailCloseBtn">&times;</button>
-    </div>
-    <div class="modal-body">
-      <div class="profile-detail" id="profileDetailContent"></div>
-    </div>
-    <div class="modal-foot">
-      <button class="profile-detail-edit-primary" id="profileDetailEditBtn">✏️ 내 문답 수정하기</button>
-      <button class="primary" id="profileDetailDoneBtn">다 봤어요</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-wrap" id="profileModal">
-  <div class="modal">
-    <div class="modal-head"><h3>내 사용설명서 쓰기</h3><button class="close" id="profileCloseBtn">&times;</button></div>
-    <div class="modal-body">
-      <div class="profile-edit-banner">
-        <strong>내 답변은 내가 고칩니다.</strong><br>
-        이름을 확인하고 PIN을 입력한 뒤, 바꾸고 싶은 내용을 자유롭게 수정해주세요.
-      </div>
-      <div class="form">
-        <div class="group"><label>누구의 문답을 수정하나요?</label><select id="profileStaffInput"></select></div>
-        <div class="group"><label>PIN</label><input type="password" id="profilePinInput" placeholder="내 PIN 번호"></div>
-        <div class="group"><label>🎂 생일 <span class="helper">(축하받을 명분이 생기는 날)</span></label><input type="text" id="birthdayInput" placeholder="예: 12월 31일"></div>
-        <div class="group"><label>🍪 좋아하는 간식 <span class="helper">(이거 주면 기분 풀림)</span></label><input id="snackInput" placeholder="예: 초콜릿, 커피, 젤리"></div>
-        <div class="group"><label>⚡ 컨디션 떨어지는 시간대 <span class="helper">(나랑 일할 때 참고사항)</span></label><input id="tiredTimeInput" placeholder="예: 오후 3시쯤"></div>
-        <div class="group"><label>😵 선호하는 점심시간 <span class="helper">(이때 말 걸면 로딩 중)</span></label><input id="lunchTimeInput" placeholder="예: 12시 30분 / 조금 늦게"></div>
-        <div class="group"><label>☕ 취미 및 특기</label><input id="hobbyInput" placeholder="예: 영상 편집, 사진 찍기, 요리"></div>
-        <div class="group"><label>🎧 좋아하는 K-POP 아이돌 또는 음악</label><input id="kpopInput" placeholder="예: BLACKPINK, G-DRAGON, 발라드"></div>
-
-        <div class="group"><label>🌈 기분 전환이 필요할 때 하는 일</label><input id="refreshInput" placeholder="예: 산책, 음악 듣기, 단 거 먹기"></div>
-        <div class="group"><label>🧊 스트레스 받을 때 조용히 보내는 신호</label><input id="stressSignalInput" placeholder="예: 말수가 줄어요 / 갑자기 정리해요"></div>
-        <div class="group"><label>🗣️ 듣기 좋은 말 한마디</label><input id="goodWordsInput" placeholder="예: 천천히 해도 돼요 / 잘하고 있어요"></div>
-        <div class="group"><label>🙅 살짝 피하고 싶은 말 한마디</label><input id="avoidWordsInput" placeholder="예: 왜 아직 안 했어요?"></div>
-        <div class="group"><label>🎁 작은 선물 하나를 받는다면</label><input id="giftInput" placeholder="예: 아이스 아메리카노 / 초콜릿"></div>
-        <div class="group"><label>📱 휴대폰에서 제일 많이 여는 앱</label><input id="appInput" placeholder="예: 인스타그램, 유튜브, 지도"></div>
-        <div class="group"><label>🛋️ 쉬는 날 가장 하고 싶은 일</label><input id="dayOffInput" placeholder="예: 아무것도 안 하기 / 카페 가기"></div>
-        <div class="group"><label>✈️ 갑자기 하루 휴가가 생긴다면</label><input id="suddenHolidayInput" placeholder="예: 바다 보러 가기 / 집에서 자기"></div>
-        <div class="group"><label>🛒 매장에 하나 생겼으면 하는 것</label><input id="wishItemInput" placeholder="예: 간식함 / 좋은 의자 / 작은 냉장고"></div>
-        <div class="group"><label>🤝 같이 일할 때 이렇게 해주면 좋아요</label><input id="teamworkInput" placeholder="예: 미리 말해주기 / 한 번 더 확인해주기"></div>
-
-        <div class="group full"><label>📖 사용설명서 한 줄 요약</label><input id="oneLineInput" placeholder="예: 말은 적지만 마음은 따뜻해요"></div>
-        <div class="group full">
-          <label>다른 직원들이 궁금해한 것</label>
-          <div id="customAnswerFields" class="question-list"></div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-foot"><button class="ghost" id="profileCancelBtn">취소</button><button class="primary" id="profileSaveBtn">수정한 문답 저장하기</button></div>
-  </div>
-</div>
-
-<div class="modal-wrap" id="questionModal">
-  <div class="modal">
-    <div class="modal-head"><h3>새로 궁금한 것 추가</h3><button class="close" id="questionCloseBtn">&times;</button></div>
-    <div class="modal-body">
-      <div class="form">
-        <div class="group"><label>작성자</label><select id="questionAuthorInput"></select></div>
-        <div class="group"><label>PIN</label><input type="password" id="questionPinInput" placeholder="내 PIN 번호"></div>
-        <div class="group full"><label>뭐가 궁금한가요?</label><input id="questionTextInput" placeholder="예: 퇴근 후 제일 먼저 하는 일은?"></div>
-      </div>
-    </div>
-    <div class="modal-foot"><button class="ghost" id="questionCancelBtn">취소</button><button class="primary" id="questionSaveBtn">다 같이 물어보기</button></div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script>
-const firebaseConfig={apiKey:"AIzaSyDMybA0gbpf-sxf83HZJEUtoEzgAxlA6bs",authDomain:"kpopstore-timetable.firebaseapp.com",databaseURL:"https://kpopstore-timetable-default-rtdb.firebaseio.com",projectId:"kpopstore-timetable",storageBucket:"kpopstore-timetable.firebasestorage.app",messagingSenderId:"848394973405",appId:"1:848394973405:web:6221818a6a358fb0c5eb34"};
-const DB_PATH="operationsHubV2";
-const PROFILE_PATH="staffProfilesV1";
-const QUESTION_PATH="staffQuestionsV1";
-const staff=[
-{name:"김은진",short:"은진",color:"#7DD3FC",role:"STAFF MEMBER",pin:"6666"},
-{name:"이주훈",short:"주훈",color:"#F5CF72",role:"STAFF MEMBER",pin:"2222"},
-{name:"이명규",short:"명규",color:"#7CCFB2",role:"STAFF MEMBER",pin:"3333"},
-{name:"심민규",short:"민규",color:"#B8A8F4",role:"STAFF MEMBER",pin:"4444"},
-{name:"박혜정",short:"혜정",color:"#F6BFE6",role:"STAFF MEMBER",pin:"5555"},
-{name:"정부영 이사님",short:"정부영",color:"#8FA8FF",role:"DIRECTOR",pin:"7777"},
-{name:"윤희준 이사님",short:"윤희준",color:"#A88BE8",role:"DIRECTOR",pin:"8888"},
-{name:"대표님",short:"대표님",color:"#FF9EB5",role:"CEO",pin:"9999"}];
-const cats={
-all:["모아보기","나중에 몰랐다고 하기 전에 여기서 한 번 봅니다."],
-directive:["안 보면 곤란해요 (오늘의 소식)","안 보면 나중에 ‘저 몰랐는데요?’ 금지."],
-handover:["나만 알기 아까워요 (전달사항)","나만 알기엔 조금 중요한 이야기."],
-supply:["참다가 사지 마세요 (필요 비품)","없으면 일 못 하는 것들. 참다가 내 돈으로 사지 마세요."],
-inventory:["마지막 하나 전에 (재고 체크)","마지막 하나를 발견한 사람이 영웅입니다."],
-praise:["칭찬은 바로바로 (칭찬 보관함)","칭찬은 아끼면 유통기한 지나갑니다."],
-suggestion:["🎋 대나무숲 (이름은 숨겨드려요·건의)","이름은 숨겨드릴게요. 할 말은 숨기지 마세요. 예: 간식 먹고 싶어요~ 🍪"]
-};
-const labels={
-directive:"오늘의 소식",
-handover:"전달사항",
-supply:"필요 비품",
-inventory:"재고 체크",
-praise:"칭찬 보관함",
-suggestion:"대나무숲"
-};
-const statusLabel={open:"미처리",progress:"진행 중",done:"완료",hold:"보류"};
-
-let db=null,items={},profiles={},questions={},selected="ALL",currentCat="all";
-
-const profileGridEl=document.getElementById("profileGrid");
-const profileModalEl=document.getElementById("profileModal");
-const profileDetailModalEl=document.getElementById("profileDetailModal");
-const profileDetailContentEl=document.getElementById("profileDetailContent");
-const profileStaffInputEl=document.getElementById("profileStaffInput");
-const profilePinInputEl=document.getElementById("profilePinInput");
-const profilePhotoInputEl=document.getElementById("profilePhotoInput");
-const profilePhotoPreviewEl=document.getElementById("profilePhotoPreview");
-const birthdayInputEl=document.getElementById("birthdayInput");
-const snackInputEl=document.getElementById("snackInput");
-const tiredTimeInputEl=document.getElementById("tiredTimeInput");
-const lunchTimeInputEl=document.getElementById("lunchTimeInput");
-const hobbyInputEl=document.getElementById("hobbyInput");
-const kpopInputEl=document.getElementById("kpopInput");
-const refreshInputEl=document.getElementById("refreshInput");
-const stressSignalInputEl=document.getElementById("stressSignalInput");
-const goodWordsInputEl=document.getElementById("goodWordsInput");
-const avoidWordsInputEl=document.getElementById("avoidWordsInput");
-const giftInputEl=document.getElementById("giftInput");
-const appInputEl=document.getElementById("appInput");
-const dayOffInputEl=document.getElementById("dayOffInput");
-const suddenHolidayInputEl=document.getElementById("suddenHolidayInput");
-const wishItemInputEl=document.getElementById("wishItemInput");
-const teamworkInputEl=document.getElementById("teamworkInput");
-const oneLineInputEl=document.getElementById("oneLineInput");
-const customAnswerFieldsEl=document.getElementById("customAnswerFields");
-
-const members=document.getElementById("members");
-const allBtn=document.getElementById("allBtn");
-const menu=document.getElementById("menu");
-const boardTitle=document.getElementById("boardTitle");
-const boardDesc=document.getElementById("boardDesc");
-const search=document.getElementById("search");
-const statusFilter=document.getElementById("statusFilter");
-const priorityFilter=document.getElementById("priorityFilter");
-const list=document.getElementById("list");
-const cAll=document.getElementById("cAll");
-const cDirective=document.getElementById("cDirective");
-const cHandover=document.getElementById("cHandover");
-const cSupply=document.getElementById("cSupply");
-const cInventory=document.getElementById("cInventory");
-const cPraise=document.getElementById("cPraise");
-const cSuggestion=document.getElementById("cSuggestion");
-const todayCount=document.getElementById("todayCount");
-const progressCount=document.getElementById("progressCount");
-const mineCount=document.getElementById("mineCount");
-const urgentCount=document.getElementById("urgentCount");
-const todayTitle=document.getElementById("todayTitle");
-const todayText=document.getElementById("todayText");
-const viewLabel=document.getElementById("viewLabel");
-
-const modal=document.getElementById("modal");
-const newBtn=document.getElementById("newBtn");
-const closeBtn=document.getElementById("closeBtn");
-const cancelBtn=document.getElementById("cancelBtn");
-const saveBtn=document.getElementById("saveBtn");
-const catInput=document.getElementById("catInput");
-const authorInput=document.getElementById("authorInput");
-const targetInput=document.getElementById("targetInput");
-const priorityInput=document.getElementById("priorityInput");
-const dueInput=document.getElementById("dueInput");
-const titleInput=document.getElementById("titleInput");
-const contentInput=document.getElementById("contentInput");
-const statusInput=document.getElementById("statusInput");
-const pinInput=document.getElementById("pinInput");
-const authorGroup=document.getElementById("authorGroup");
-const pinGroup=document.getElementById("pinGroup");
-const helper=document.getElementById("helper");
-const toast=document.getElementById("toast");
-
-const profileGrid=document.getElementById("profileGrid");
-const profileModal=document.getElementById("profileModal");
-const profileDetailModal=document.getElementById("profileDetailModal");
-const profileDetailContent=document.getElementById("profileDetailContent");
-const profileStaffInput=document.getElementById("profileStaffInput");
-const profilePinInput=document.getElementById("profilePinInput");
-const profilePhotoInput=document.getElementById("profilePhotoInput");
-const profilePhotoPreview=document.getElementById("profilePhotoPreview");
-const birthdayInput=document.getElementById("birthdayInput");
-const snackInput=document.getElementById("snackInput");
-const tiredTimeInput=document.getElementById("tiredTimeInput");
-const lunchTimeInput=document.getElementById("lunchTimeInput");
-const hobbyInput=document.getElementById("hobbyInput");
-const kpopInput=document.getElementById("kpopInput");
-const refreshInput=document.getElementById("refreshInput");
-const stressSignalInput=document.getElementById("stressSignalInput");
-const goodWordsInput=document.getElementById("goodWordsInput");
-const avoidWordsInput=document.getElementById("avoidWordsInput");
-const giftInput=document.getElementById("giftInput");
-const appInput=document.getElementById("appInput");
-const dayOffInput=document.getElementById("dayOffInput");
-const suddenHolidayInput=document.getElementById("suddenHolidayInput");
-const wishItemInput=document.getElementById("wishItemInput");
-const teamworkInput=document.getElementById("teamworkInput");
-const oneLineInput=document.getElementById("oneLineInput");
-const customAnswerFields=document.getElementById("customAnswerFields");
-const profileCloseBtn=document.getElementById("profileCloseBtn");
-const profileCancelBtn=document.getElementById("profileCancelBtn");
-const profileSaveBtn=document.getElementById("profileSaveBtn");
-const profileDetailCloseBtn=document.getElementById("profileDetailCloseBtn");
-const profileDetailDoneBtn=document.getElementById("profileDetailDoneBtn");
-const profileDetailEditBtn=document.getElementById("profileDetailEditBtn");
-
-const questionModal=document.getElementById("questionModal");
-const newQuestionBtn=document.getElementById("newQuestionBtn");
-const questionCloseBtn=document.getElementById("questionCloseBtn");
-const questionCancelBtn=document.getElementById("questionCancelBtn");
-const questionSaveBtn=document.getElementById("questionSaveBtn");
-const questionAuthorInput=document.getElementById("questionAuthorInput");
-const questionPinInput=document.getElementById("questionPinInput");
-const questionTextInput=document.getElementById("questionTextInput");
-
-
-
-window.addEventListener("error",event=>{
-  console.error("페이지 오류:",event.error||event.message);
-  const status=document.getElementById("conn");
-  if(status)status.textContent="페이지 오류 발생";
-});
-
-renderMembers();fillSelects();updateForm();
-try{firebase.initializeApp(firebaseConfig);db=firebase.database();document.getElementById("conn").textContent="Firebase 연결됨";db.ref(DB_PATH).on("value",s=>{items=s.val()||{};renderAll()});db.ref(PROFILE_PATH).on("value",s=>{profiles=s.val()||{};renderProfiles()});db.ref(QUESTION_PATH).on("value",s=>{questions=s.val()||{};renderProfiles()})}catch(e){console.error(e);document.getElementById("conn").textContent="연결 오류"}
-
-function renderMembers(){
- const box=document.getElementById("members");
- box.innerHTML=staff.map((s,i)=>`<button class="member" data-name="${s.name}" style="--c:${s.color}"><div class="avatar">${s.short.slice(0,1)}</div><strong>${s.short}</strong><span>${s.role}</span><b>STAFF PASS ${String(i+1).padStart(2,"0")}</b></button>`).join("")+`<button class="member active" data-name="ALL" style="--c:#B1B4DD"><div class="avatar">ALL</div><strong>전체 직원</strong><span>ALL STAFF</span><b>STAFF LOUNGE</b></button>`;
-}
-function fillSelects(){
- const opts=staff.map(s=>`<option value="${s.name}">${s.name}</option>`).join("");
- authorInput.innerHTML=`<option value="">작성자 선택</option>${opts}`;
- targetInput.innerHTML=`<option value="ALL">전체 직원</option>${opts}`;
- profileStaffInputEl.innerHTML=`<option value="">누구 사용설명서인가요?</option>${opts}`;
- questionAuthorInput.innerHTML=`<option value="">작성자 선택</option>${opts}`;
-}
-function visible(){
- let arr=Object.entries(items).map(([id,v])=>({id,...v}));
- if(selected!=="ALL")arr=arr.filter(x=>x.target==="ALL"||x.target===selected||x.author===selected);
- return arr;
-}
-function renderAll(){renderList();renderCounts();renderStats();renderToday()}
-function renderList(){
- let arr=visible(),q=search.value.trim().toLowerCase(),st=statusFilter.value,pr=priorityFilter.value;
- if(currentCat!=="all")arr=arr.filter(x=>x.category===currentCat);
- if(st!=="all")arr=arr.filter(x=>x.status===st);
- if(pr!=="all")arr=arr.filter(x=>(x.priority||"normal")===pr);
- if(q)arr=arr.filter(x=>`${x.title||""} ${x.content||""}`.toLowerCase().includes(q));
- arr.sort((a,b)=>Number(b.createdAt||0)-Number(a.createdAt||0));
- if(!arr.length){list.innerHTML=`<div class="empty">아직 조용합니다. 좋은 건지 무서운 건지는 모릅니다 🙂</div>`;return}
- list.innerHTML=arr.map(x=>{
-   const d=new Date(x.createdAt||Date.now()),date=`${d.getMonth()+1}/${d.getDate()}`;
-   const target=x.target==="ALL"||!x.target?"전체 직원":x.target;
-   const author=x.category==="suggestion"?"익명":(x.author||"미지정");
-   const due=x.dueDate||"-";
-   const pri=x.priority==="urgent"?"🔥 긴급":x.priority==="low"?"🌿 여유":"보통";
-   return `<div class="row">
-   <div><span class="badge cat-${x.category}">${labels[x.category]||"기타"}</span></div>
-   <div class="copy"><strong>${esc(x.title||"제목 없음")} ${x.priority==="urgent"?"🔥":""}</strong><p>${esc(x.content||"")}</p></div>
-   <div class="meta">${esc(target)}<br><span style="color:#9aa3b3">by ${esc(author)}</span></div>
-   <div class="meta">${due}<br><span style="color:#9aa3b3">${date} · ${pri}</span></div>
-   <div class="actions2"><span class="badge s-${x.status||"open"}">${statusLabel[x.status||"open"]}</span><button class="icon" onclick="ack('${x.id}')">확인</button><button class="icon" onclick="changeStatus('${x.id}')">상태</button><button class="icon" onclick="removeItem('${x.id}')">삭제</button></div>
-   </div>`;
- }).join("");
-}
-function renderCounts(){
- const v=visible();cAll.textContent=v.length;cDirective.textContent=v.filter(x=>x.category==="directive").length;cHandover.textContent=v.filter(x=>x.category==="handover").length;cSupply.textContent=v.filter(x=>x.category==="supply").length;cInventory.textContent=v.filter(x=>x.category==="inventory").length;cPraise.textContent=v.filter(x=>x.category==="praise").length;cSuggestion.textContent=v.filter(x=>x.category==="suggestion").length;
-}
-function renderStats(){
- const v=visible(),today=new Date().toDateString();
- todayCount.textContent=v.filter(x=>new Date(x.createdAt||0).toDateString()===today).length;
- progressCount.textContent=v.filter(x=>x.status==="progress").length;
- mineCount.textContent=selected==="ALL"?0:v.filter(x=>x.target===selected).length;
- urgentCount.textContent=v.filter(x=>(x.priority||"normal")==="urgent"&&x.status!=="done").length;
-}
-function renderToday(){
- const today=new Date().toDateString();
- const arr=visible().filter(x=>x.category==="directive"&&new Date(x.createdAt||0).toDateString()===today).sort((a,b)=>Number(b.createdAt||0)-Number(a.createdAt||0));
- if(arr.length){todayTitle.textContent=arr[0].title;todayText.textContent=arr[0].content}else{todayTitle.textContent="안 봤다는 말은 내일 못 써요";todayText.textContent="오늘은 조용합니다. 이런 날도 있어야죠."}
-}
-function selectMember(name){
- selected=name;document.querySelectorAll(".member").forEach(x=>x.classList.toggle("active",x.dataset.name===name));viewLabel.textContent=name==="ALL"?"ALL STAFF":`${name} STAFF VIEW`;renderAll()
-}
-function openModal(){if(selected!=="ALL")targetInput.value=selected;modal.classList.add("show")}
-function closeModal(){modal.classList.remove("show");resetForm()}
-function resetForm(){catInput.value="handover";authorInput.value=selected==="ALL"?"":selected;targetInput.value=selected==="ALL"?"ALL":selected;priorityInput.value="normal";dueInput.value="";titleInput.value="";contentInput.value="";statusInput.value="open";pinInput.value="";updateForm()}
-function updateForm(){
- const anon=catInput.value==="suggestion";authorGroup.style.display=anon?"none":"grid";pinGroup.style.display=anon?"none":"grid";helper.textContent=anon?"대나무숲은 이름이 저장되지 않아요. 예: 간식 먹고 싶어요~ 🍪":"본인 확인은 해야죠. 이름과 PIN을 맞춰주세요."
-}
-function saveItem(){
- if(!db){toastMsg("Firebase 연결을 확인해주세요.");return}
- const category=catInput.value,title=titleInput.value.trim(),content=contentInput.value.trim(),target=targetInput.value,status=statusInput.value,priority=priorityInput.value,dueDate=dueInput.value;
- const author=category==="suggestion"?"익명":authorInput.value;
- if(!title||!content){alert("제목과 내용을 입력해주세요.");return}
- if(category!=="suggestion"){
-   if(!author){alert("작성자를 선택해주세요.");return}
-   const s=staff.find(x=>x.name===author);
-   if(!s||s.pin!==pinInput.value){alert("작성자 이름과 PIN이 일치하지 않습니다.");return}
-   if(category==="directive"&&!["정부영 이사님","윤희준 이사님","대표님"].includes(author)){alert("안 보면 곤란한 내용은 이사님 또는 대표님만 등록할 수 있습니다.");return}
- }
- db.ref(DB_PATH).push().set({category,title,content,target,status,priority,dueDate,author,createdAt:Date.now(),updatedAt:Date.now(),acks:{}}).then(()=>{closeModal();toastMsg("올라갔습니다. 이제 다 같이 봅니다 ✨")})
-}
-function requirePin(item){
- if(item.category==="suggestion")return true;
- const pin=prompt(`${item.author}님의 PIN을 입력해주세요.`);
- const s=staff.find(x=>x.name===item.author);
- return !!s&&s.pin===pin;
-}
-function changeStatus(id){const item=items[id];if(!item||!requirePin(item)){alert("PIN이 올바르지 않습니다.");return}const order=["open","progress","done","hold"],next=order[(order.indexOf(item.status||"open")+1)%order.length];db.ref(`${DB_PATH}/${id}`).update({status:next,updatedAt:Date.now()}).then(()=>toastMsg(`상태가 '${statusLabel[next]}'으로 바뀌었어요.`))}
-function removeItem(id){const item=items[id];if(!item||!requirePin(item)){alert("PIN이 올바르지 않습니다.");return}if(confirm("이 이야기를 정말 삭제할까요?"))db.ref(`${DB_PATH}/${id}`).remove().then(()=>toastMsg("이야기가 삭제됐어요."))}
-function ack(id){
- if(selected==="ALL"){alert("먼저 내 이름을 선택해주세요.");return}
- const s=staff.find(x=>x.name===selected),pin=prompt(`${selected}님의 PIN을 입력해주세요.`);
- if(!s||s.pin!==pin){alert("PIN이 올바르지 않습니다.");return}
- db.ref(`${DB_PATH}/${id}/acks/${selected.replace(/[.#$\[\]]/g,"_")}`).set(Date.now()).then(()=>toastMsg("확인 완료! 👀"))
-}
-
-function safeKey(name){return name.replace(/[.#$\[\]]/g,"_")}
-function renderProfiles(){
- const box=document.getElementById("profileGrid"); if(!box)return;
- box.innerHTML=staff.map(s=>{
-   const p=profiles[safeKey(s.name)]||{};
-   const summary=p.oneLine||p.teamwork||p.hobby||"아직 사용설명서를 작성하지 않았어요.";
-   return `<div class="profile-card" data-profile-name="${s.name}" style="--pc:${s.color}">
-     <div class="profile-top">
-       ${p.photoData?`<img class="profile-photo" src="${p.photoData}" alt="${esc(s.short)} 프로필">`:`<div class="profile-photo-fallback">${s.short.slice(0,1)}</div>`}
-       <div><strong>${s.short}</strong><span>${s.role}</span></div>
-     </div>
-     <div class="profile-summary">${esc(summary)}</div>
-     <span class="profile-open-hint">눌러서 크게 보기 →</span>
-     <div class="profile-actions">
-       <button type="button" data-edit-profile="${s.name}">내 사용설명서 쓰기</button>
-     </div>
-   </div>`;
- }).join("");
-}
-
-let activeProfileDetailName="";
-
-function openProfileDetail(name){
-  const s=staff.find(x=>x.name===name);
-  if(!s)return;
-  const p=profiles[safeKey(name)]||{};
-  const custom=Object.entries(p.customAnswers||{}).map(([qid,ans])=>{
-    const q=questions[qid]?.text||"추가 질문";
-    return `<div class="profile-detail-item full"><b>${esc(q)}</b><span>${esc(ans||"아직 답하지 않았어요.")}</span></div>`;
-  }).join("");
-
-  profileDetailContentEl.innerHTML=`
-    <div class="profile-detail-head">
-      ${p.photoData?`<img class="profile-detail-photo" src="${p.photoData}" alt="${esc(s.short)} 프로필">`:`<div class="profile-detail-fallback" style="--detail-color:${s.color}">${s.short.slice(0,1)}</div>`}
-      <div><h3>${esc(s.short)}</h3><p>${esc(s.role)}</p></div>
-    </div>
-    <div class="profile-detail-grid">
-      <div class="profile-detail-item"><b>🎂 생일 <small>(축하받을 명분이 생기는 날)</small></b><span>${esc(p.birthday||"아직 비밀")}</span></div>
-      <div class="profile-detail-item"><b>🍪 좋아하는 간식 <small>(이거 주면 기분 풀림)</small></b><span>${esc(p.snack||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>⚡ 컨디션 떨어지는 시간대 <small>(나랑 일할 때 참고사항)</small></b><span>${esc(p.tiredTime||"아직 몰라요")}</span></div>
-      <div class="profile-detail-item"><b>😵 선호하는 점심시간 <small>(이때 말 걸면 로딩 중)</small></b><span>${esc(p.lunchTime||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>☕ 취미 및 특기</b><span>${esc(p.hobby||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🎧 좋아하는 K-POP 아이돌 또는 음악</b><span>${esc(p.kpop||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🌈 기분 전환이 필요할 때 하는 일</b><span>${esc(p.refresh||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🧊 스트레스 받을 때 조용히 보내는 신호</b><span>${esc(p.stressSignal||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🗣️ 듣기 좋은 말 한마디</b><span>${esc(p.goodWords||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🙅 살짝 피하고 싶은 말 한마디</b><span>${esc(p.avoidWords||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🎁 작은 선물 하나를 받는다면</b><span>${esc(p.gift||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>📱 휴대폰에서 제일 많이 여는 앱</b><span>${esc(p.app||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🛋️ 쉬는 날 가장 하고 싶은 일</b><span>${esc(p.dayOff||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>✈️ 갑자기 하루 휴가가 생긴다면</b><span>${esc(p.suddenHoliday||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🛒 매장에 하나 생겼으면 하는 것</b><span>${esc(p.wishItem||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🤝 같이 일할 때 이렇게 해주면 좋아요</b><span>${esc(p.teamwork||"아직 미정")}</span></div>
-      <div class="profile-detail-item full"><b>📖 사용설명서 한 줄 요약</b><span>${esc(p.oneLine||"아직 작성하지 않았어요.")}</span></div>
-      ${custom}
-    </div>`;
-  activeProfileDetailName=name;
-  profileDetailModalEl.classList.add("show");
-}
-
-function openProfile(name){
-  if(!name)return;
-  profileStaffInputEl.value=name;
-  loadProfileForm(name);
-  profileModalEl.classList.add("show");
-  setTimeout(()=>profilePinInputEl.focus(),120);
-}
-
-function loadProfileForm(name){
+new_open = r'''function openProfile(name){
   if(!name){
-    birthdayInputEl.value="";
-    snackInputEl.value="";
-    tiredTimeInputEl.value="";
-    lunchTimeInputEl.value="";
-    hobbyInputEl.value="";
-    kpopInputEl.value="";
-    refreshInputEl.value="";
-    stressSignalInputEl.value="";
-    goodWordsInputEl.value="";
-    avoidWordsInputEl.value="";
-    giftInputEl.value="";
-    appInputEl.value="";
-    dayOffInputEl.value="";
-    suddenHolidayInputEl.value="";
-    wishItemInputEl.value="";
-    teamworkInputEl.value="";
-    oneLineInputEl.value="";
-    customAnswerFieldsEl.innerHTML='<div class="helper">직원을 먼저 선택해주세요.</div>';
+    alert("수정할 직원을 찾지 못했습니다.");
     return;
   }
 
-  const p=profiles[safeKey(name)]||{};
-  birthdayInputEl.value=p.birthday||"";
-  snackInputEl.value=p.snack||"";
-  tiredTimeInputEl.value=p.tiredTime||"";
-  lunchTimeInputEl.value=p.lunchTime||"";
-  hobbyInputEl.value=p.hobby||"";
-  kpopInputEl.value=p.kpop||"";
-  refreshInputEl.value=p.refresh||"";
-  stressSignalInputEl.value=p.stressSignal||"";
-  goodWordsInputEl.value=p.goodWords||"";
-  avoidWordsInputEl.value=p.avoidWords||"";
-  giftInputEl.value=p.gift||"";
-  appInputEl.value=p.app||"";
-  dayOffInputEl.value=p.dayOff||"";
-  suddenHolidayInputEl.value=p.suddenHoliday||"";
-  wishItemInputEl.value=p.wishItem||"";
-  teamworkInputEl.value=p.teamwork||"";
-  oneLineInputEl.value=p.oneLine||"";
-  profilePinInputEl.value="";
-  profilePhotoPreviewEl.src=p.photoData||"";
-  profilePhotoPreviewEl.style.display=p.photoData?"block":"none";
-  profilePhotoInputEl.value="";
+  const editor=document.getElementById("profileModal");
+  const select=document.getElementById("profileStaffInput");
 
-  customAnswerFieldsEl.innerHTML=Object.entries(questions).map(([id,q])=>`
-    <div class="question-row">
-      <label>${esc(q.text||"질문")}</label>
-      <input data-qid="${id}" value="${esc((p.customAnswers||{})[id]||"")}" placeholder="여기에 내 답변을 적어주세요">
-    </div>
-  `).join("")||'<div class="helper">아직 추가 질문이 없어요. 새 질문을 만들면 여기에 나타납니다.</div>';
-}
-
-function resizeImageFile(file,maxSize=420,quality=.82){
- return new Promise((resolve,reject)=>{
-   const reader=new FileReader();
-   reader.onload=e=>{
-     const img=new Image();
-     img.onload=()=>{
-       const size=Math.min(img.width,img.height);
-       const sx=(img.width-size)/2,sy=(img.height-size)/2;
-       const canvas=document.createElement("canvas");
-       canvas.width=maxSize;canvas.height=maxSize;
-       const ctx=canvas.getContext("2d");
-       ctx.drawImage(img,sx,sy,size,size,0,0,maxSize,maxSize);
-       resolve(canvas.toDataURL("image/jpeg",quality));
-     };
-     img.onerror=reject;img.src=e.target.result;
-   };
-   reader.onerror=reject;reader.readAsDataURL(file);
- });
-}
-
-async function saveProfile(){
-  const name=profileStaffInputEl.value;
-  const pin=profilePinInputEl.value;
-  const s=staff.find(x=>x.name===name);
-
-  if(!name){
-    alert("수정할 직원을 선택해주세요.");
-    return;
-  }
-  if(!s||s.pin!==pin){
-    alert("직원 이름과 PIN이 일치하지 않습니다.");
-    profilePinInputEl.focus();
-    return;
-  }
-  if(!db){
-    alert("Firebase 연결을 확인해주세요.");
+  if(!editor||!select){
+    alert("수정창을 불러오지 못했습니다. 페이지를 새로고침해주세요.");
     return;
   }
 
-  const customAnswers={};
-  document.querySelectorAll("#customAnswerFields input[data-qid]").forEach(input=>{
-    customAnswers[input.dataset.qid]=input.value.trim();
-  });
+  // 답변을 불러오는 중 오류가 나더라도 수정창 자체는 반드시 보이게 합니다.
+  editor.classList.add("show");
+  editor.style.display="flex";
+  select.value=name;
 
-  let photoData=(profiles[safeKey(name)]||{}).photoData||"";
-  const file=profilePhotoInputEl.files[0];
-  if(file){
-    try{
-      photoData=await resizeImageFile(file);
-    }catch(error){
-      alert("사진을 불러오지 못했습니다.");
-      return;
+  try{
+    loadProfileForm(name);
+  }catch(error){
+    console.error("프로필 불러오기 오류:",error);
+    const banner=editor.querySelector(".profile-edit-banner");
+    if(banner){
+      banner.innerHTML="<strong>수정창은 열렸지만 기존 답변을 불러오지 못했어요.</strong><br>새로 입력한 뒤 저장하거나 페이지를 새로고침해주세요.";
     }
   }
 
-  const updatedProfile={
-    name,
-    photoData,
-    birthday:birthdayInputEl.value.trim(),
-    snack:snackInputEl.value.trim(),
-    tiredTime:tiredTimeInputEl.value.trim(),
-    lunchTime:lunchTimeInputEl.value.trim(),
-    hobby:hobbyInputEl.value.trim(),
-    kpop:kpopInputEl.value.trim(),
-    refresh:refreshInputEl.value.trim(),
-    stressSignal:stressSignalInputEl.value.trim(),
-    goodWords:goodWordsInputEl.value.trim(),
-    avoidWords:avoidWordsInputEl.value.trim(),
-    gift:giftInputEl.value.trim(),
-    app:appInputEl.value.trim(),
-    dayOff:dayOffInputEl.value.trim(),
-    suddenHoliday:suddenHolidayInputEl.value.trim(),
-    wishItem:wishItemInputEl.value.trim(),
-    teamwork:teamworkInputEl.value.trim(),
-    oneLine:oneLineInputEl.value.trim(),
-    customAnswers,
-    updatedAt:Date.now()
-  };
-
-  try{
-    await db.ref(`${PROFILE_PATH}/${safeKey(name)}`).set(updatedProfile);
-    profiles[safeKey(name)]=updatedProfile;
-    renderProfiles();
-    profileModalEl.classList.remove("show");
-    profilePinInputEl.value="";
-    toastMsg("수정한 문답이 저장됐어요 ✨");
-    openProfileDetail(name);
-  }catch(error){
-    console.error(error);
-    alert("저장하지 못했습니다. Firebase 설정을 확인해주세요.");
-  }
+  setTimeout(()=>{
+    const pin=document.getElementById("profilePinInput");
+    if(pin)pin.focus();
+  },150);
 }
 
-function saveQuestion(){
- const author=questionAuthorInput.value,pin=questionPinInput.value,text=questionTextInput.value.trim(),s=staff.find(x=>x.name===author);
- if(!s||s.pin!==pin){alert("작성자 이름과 PIN이 일치하지 않습니다.");return}
- if(!text){alert("질문을 입력해주세요.");return}
- db.ref(QUESTION_PATH).push().set({text,author,createdAt:Date.now()}).then(()=>{questionModal.classList.remove("show");questionTextInput.value="";questionPinInput.value="";toastMsg("뭐가 궁금한가요?이 추가됐어요 💡")})
-}
-
-function toastMsg(msg){toast.textContent=msg;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2200)}
-function esc(v){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-
-members.addEventListener("click",e=>{const b=e.target.closest(".member");if(b)selectMember(b.dataset.name)});
-allBtn.addEventListener("click",()=>selectMember("ALL"));
-menu.addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;currentCat=b.dataset.cat;document.querySelectorAll("#menu button").forEach(x=>x.classList.remove("active"));b.classList.add("active");boardTitle.textContent=cats[currentCat][0];boardDesc.textContent=cats[currentCat][1];renderList()});
-document.querySelectorAll(".quick-card").forEach(b=>b.addEventListener("click",()=>{currentCat=b.dataset.quick;document.querySelectorAll("#menu button").forEach(x=>x.classList.toggle("active",x.dataset.cat===currentCat));boardTitle.textContent=cats[currentCat][0];boardDesc.textContent=cats[currentCat][1];renderList()}));
-newBtn.addEventListener("click",openModal);closeBtn.addEventListener("click",closeModal);cancelBtn.addEventListener("click",closeModal);saveBtn.addEventListener("click",saveItem);catInput.addEventListener("change",updateForm);search.addEventListener("input",renderList);statusFilter.addEventListener("change",renderList);priorityFilter.addEventListener("change",renderList);modal.addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
-
-
-profileGridEl.addEventListener("click",event=>{
-  const editButton=event.target.closest("[data-edit-profile]");
-  if(editButton){
+function switchToProfileEditor(event){
+  if(event){
     event.preventDefault();
     event.stopPropagation();
-    openProfile(editButton.dataset.editProfile);
-    return;
   }
-  const card=event.target.closest("[data-profile-name]");
-  if(card)openProfileDetail(card.dataset.profileName);
-});
 
-document.getElementById("profileDetailCloseBtn").addEventListener("click",()=>profileDetailModalEl.classList.remove("show"));
-document.getElementById("profileDetailDoneBtn").addEventListener("click",()=>profileDetailModalEl.classList.remove("show"));
-document.getElementById("profileDetailEditBtn").addEventListener("click",()=>{
   const name=activeProfileDetailName;
-  profileDetailModalEl.classList.remove("show");
-  if(name)openProfile(name);
-});
-profileDetailModalEl.addEventListener("click",event=>{
-  if(event.target===profileDetailModalEl)profileDetailModalEl.classList.remove("show");
-});
+  const detail=document.getElementById("profileDetailModal");
 
-profileStaffInputEl.addEventListener("change",()=>loadProfileForm(profileStaffInputEl.value));
-profilePhotoInputEl.addEventListener("change",async()=>{
-  const file=profilePhotoInputEl.files[0];
-  if(!file)return;
-  try{
-    profilePhotoPreviewEl.src=await resizeImageFile(file,240,.8);
-    profilePhotoPreviewEl.style.display="block";
-  }catch(error){
-    alert("사진 미리보기를 만들지 못했습니다.");
+  // 수정창을 먼저 연 뒤 상세창을 닫아 화면이 사라져 보이지 않게 합니다.
+  openProfile(name);
+
+  requestAnimationFrame(()=>{
+    if(detail){
+      detail.classList.remove("show");
+      detail.style.display="none";
+    }
+  });
+
+  return false;
+}
+
+function openProfileFromButton(event,name){
+  if(event){
+    event.preventDefault();
+    event.stopPropagation();
   }
-});
+  openProfile(name);
+  return false;
+}
 
-document.getElementById("profileCloseBtn").addEventListener("click",()=>profileModalEl.classList.remove("show"));
-document.getElementById("profileCancelBtn").addEventListener("click",()=>profileModalEl.classList.remove("show"));
-document.getElementById("profileSaveBtn").addEventListener("click",saveProfile);
-profileModalEl.addEventListener("click",event=>{
-  if(event.target===profileModalEl)profileModalEl.classList.remove("show");
-});
+'''
+text = text[:start] + new_open + text[end:]
 
-newQuestionBtn.addEventListener("click",()=>questionModal.classList.add("show"));
-questionCloseBtn.addEventListener("click",()=>questionModal.classList.remove("show"));
-questionCancelBtn.addEventListener("click",()=>questionModal.classList.remove("show"));
-questionSaveBtn.addEventListener("click",saveQuestion);
-questionModal.addEventListener("click",e=>{if(e.target.id==="questionModal")questionModal.classList.remove("show")});
+# Ensure closing functions clear inline display.
+text = text.replace(
+    'document.getElementById("profileCloseBtn").addEventListener("click",()=>profileModalEl.classList.remove("show"));',
+    '''document.getElementById("profileCloseBtn").addEventListener("click",()=>{
+  profileModalEl.classList.remove("show");
+  profileModalEl.style.display="";
+});'''
+)
+text = text.replace(
+    'document.getElementById("profileCancelBtn").addEventListener("click",()=>profileModalEl.classList.remove("show"));',
+    '''document.getElementById("profileCancelBtn").addEventListener("click",()=>{
+  profileModalEl.classList.remove("show");
+  profileModalEl.style.display="";
+});'''
+)
+text = text.replace(
+    'if(event.target===profileModalEl)profileModalEl.classList.remove("show");',
+    '''if(event.target===profileModalEl){
+    profileModalEl.classList.remove("show");
+    profileModalEl.style.display="";
+  }'''
+)
 
-</script>
-</body>
-</html>
+# Remove the old duplicate listener on the detail edit button.
+text = re.sub(
+    r'document\.getElementById\("profileDetailEditBtn"\)\.addEventListener\("click",\(\)=>\{.*?\}\);\n',
+    '',
+    text,
+    count=1,
+    flags=re.S
+)
+
+# Ensure detail opening clears any old inline display:none.
+text = text.replace(
+    'profileDetailModalEl.classList.add("show");',
+    'profileDetailModalEl.style.display="";\n  profileDetailModalEl.classList.add("show");'
+)
+
+# Saving closes editor and clears inline display.
+text = text.replace(
+    'profileModalEl.classList.remove("show");\n    profilePinInputEl.value="";',
+    'profileModalEl.classList.remove("show");\n    profileModalEl.style.display="";\n    profilePinInputEl.value="";'
+)
+
+# Add a visible safety error box rather than silent failure.
+text = text.replace(
+    '<div class="profile-edit-banner">',
+    '<div class="profile-edit-banner" id="profileEditBanner">'
+)
+
+out = Path("/mnt/data/kgeniepop_staff_hub_profile_edit_final.html")
+out.write_text(text, encoding="utf-8")
+
+print(out)
