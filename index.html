@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>K GENIE POP STAFF OS</title>
+<title>K GENIE POP STAFF HUB</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -251,6 +251,127 @@ button,input,select,textarea{font:inherit} button{cursor:pointer}
 @media(max-width:700px){
   .wrap{padding:14px 11px 34px}.topbar{align-items:flex-start;flex-direction:column}.actions{width:100%;justify-content:space-between}.pill{display:none}.hero{padding:19px}.hero h2{font-size:27px}.member-grid{grid-template-columns:repeat(2,1fr)} .profile-grid{grid-template-columns:1fr}.quick{grid-template-columns:1fr 1fr}.menu{grid-template-columns:1fr 1fr}.toolbar{flex-direction:column}.search{width:100%}.filters{width:100%}.filter{flex:1}.form{grid-template-columns:1fr}.group.full{grid-column:auto}
 }
+
+/* ===== 가독성·프로필 수정 UX 보강 ===== */
+body{font-size:16px}
+.brand small{font-size:13px}
+.kicker{font-size:13px}
+.hero p{font-size:16px;line-height:1.8}
+.stat small{font-size:13px}
+.section-head h3,.profile-head h3{font-size:22px}
+.section-head p,.profile-head p{font-size:14px;line-height:1.6}
+.member strong{font-size:17px}
+.member span{font-size:13px}
+.member b{font-size:11px}
+.side-title{font-size:12px}
+.menu button{font-size:14px;line-height:1.35}
+.menu-sub{font-size:11px}
+.count{font-size:11px}
+.today-top{font-size:12px}
+.today h3{font-size:24px}
+.today p{font-size:15px}
+.quick-card b{font-size:15px}
+.quick-card span{font-size:12px;line-height:1.5}
+.toolbar h3{font-size:21px}
+.toolbar p{font-size:13px}
+.search,.filter{font-size:14px;padding:12px 13px}
+.head{font-size:11px}
+.badge{font-size:11px;padding:7px 10px}
+.copy strong{font-size:15px}
+.copy p{font-size:13px;line-height:1.65}
+.meta{font-size:12px;line-height:1.55}
+.icon{font-size:11px;padding:8px 9px}
+.empty{font-size:14px}
+
+.modal{width:min(760px,96vw)}
+.modal-head h3{font-size:22px}
+.modal-body{padding:26px}
+.group{gap:9px}
+.group label{font-size:14px}
+.group input,.group select,.group textarea{
+  font-size:16px;
+  padding:14px 15px;
+  border-radius:15px;
+}
+.group textarea{min-height:150px}
+.helper{font-size:12px;line-height:1.65}
+.modal-foot .ghost,.modal-foot .primary{
+  font-size:14px;
+  padding:13px 18px;
+}
+
+.profile-card{padding:19px}
+.profile-top strong{font-size:17px}
+.profile-top span{font-size:12px}
+.profile-summary{font-size:14px;line-height:1.65;min-height:58px}
+.profile-open-hint{font-size:12px;padding:8px 11px}
+.profile-actions button{font-size:12px;padding:9px 11px}
+
+.profile-detail-head h3{font-size:29px}
+.profile-detail-head p{font-size:14px}
+.profile-detail-item{padding:18px}
+.profile-detail-item b{font-size:14px;margin-bottom:8px}
+.profile-detail-item span{font-size:16px;line-height:1.75}
+
+.question-row{
+  padding:14px;
+  font-size:14px;
+}
+.question-row label{
+  display:block;
+  margin-bottom:8px;
+  font-size:14px;
+  font-weight:800;
+}
+.question-row input{
+  font-size:15px;
+  padding:13px 14px;
+}
+
+.profile-edit-banner{
+  margin-bottom:18px;
+  padding:15px 17px;
+  border-radius:16px;
+  background:linear-gradient(135deg,rgba(210,249,254,.62),rgba(246,191,230,.30));
+  color:#526076;
+  font-size:14px;
+  line-height:1.65;
+  font-weight:700;
+}
+.profile-edit-banner strong{
+  color:#5e5c91;
+}
+.profile-detail-edit-primary{
+  border:none;
+  color:#fff;
+  border-radius:14px;
+  padding:13px 18px;
+  font-size:14px;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--mint),var(--sky),var(--lav));
+  box-shadow:0 12px 25px rgba(38,204,194,.22);
+}
+@media(max-width:700px){
+  body{font-size:15px}
+  .hero p{font-size:15px}
+  .modal-body{padding:19px}
+  .group input,.group select,.group textarea{font-size:16px}
+  .profile-detail-item span{font-size:15px}
+}
+
+
+.profile-detail-item b small{
+  font-size:11px;
+  color:#98a2b3;
+  font-weight:700;
+}
+.group label .helper{
+  display:inline;
+  margin-left:4px;
+  font-size:11px;
+  font-weight:700;
+}
+
 </style>
 </head>
 <body>
@@ -258,7 +379,7 @@ button,input,select,textarea{font:inherit} button{cursor:pointer}
   <header class="topbar">
     <div class="brand">
       <div class="logo">KG</div>
-      <div><small>K-GENIE POP POP-UP STORE STAFF HUB</small><h1>K GENIE POP STAFF OS</h1></div>
+      <div><small>K-GENIE POP POP-UP STORE STAFF HUB</small><h1>K GENIE POP STAFF HUB</h1></div>
     </div>
     <div class="actions">
       <span class="pill" id="conn">시스템 연결 중</span>
@@ -270,7 +391,7 @@ button,input,select,textarea{font:inherit} button{cursor:pointer}
   <section class="hero glass">
     <div class="hero-copy">
       <span class="kicker">✨ STAFF ONLY · OUR STORE, OUR STYLE</span>
-      <h2> <span>K GENIE POP 매장을 함께 만들어가는 직원 커뮤니케이션 HUB입니다.</span></h2>
+      <h2><span>K GENIE POP 매장을 함께 만들어가는 직원 커뮤니케이션 HUB입니다.</span></h2>
       <p>매장 이야기가 여기저기 흩어지면 결국 아무도 모릅니다.<br>그래서 여기 다 모았습니다.</p>
     </div>
     <div class="hero-stats">
@@ -384,7 +505,7 @@ button,input,select,textarea{font:inherit} button{cursor:pointer}
       <div class="profile-detail" id="profileDetailContent"></div>
     </div>
     <div class="modal-foot">
-      <button class="ghost" id="profileDetailEditBtn">내 프로필이라면 수정하기</button>
+      <button class="profile-detail-edit-primary" id="profileDetailEditBtn">✏️ 내 문답 수정하기</button>
       <button class="primary" id="profileDetailDoneBtn">다 봤어요</button>
     </div>
   </div>
@@ -394,15 +515,31 @@ button,input,select,textarea{font:inherit} button{cursor:pointer}
   <div class="modal">
     <div class="modal-head"><h3>내 사용설명서 쓰기</h3><button class="close" id="profileCloseBtn">&times;</button></div>
     <div class="modal-body">
+      <div class="profile-edit-banner">
+        <strong>내 답변은 내가 고칩니다.</strong><br>
+        이름을 확인하고 PIN을 입력한 뒤, 바꾸고 싶은 내용을 자유롭게 수정해주세요.
+      </div>
       <div class="form">
-        <div class="group"><label>누구 사용설명서인가요?</label><select id="profileStaffInput"></select></div>
+        <div class="group"><label>누구의 문답을 수정하나요?</label><select id="profileStaffInput"></select></div>
         <div class="group"><label>PIN</label><input type="password" id="profilePinInput" placeholder="내 PIN 번호"></div>
-        <div class="group"><label>🎂 케이크 먹을 명분이 생기는 날</label><input type="text" id="birthdayInput" placeholder="예: 12월 31일"></div>
-        <div class="group"><label>🍪 이거 주면 기분 풀림</label><input id="snackInput" placeholder="예: 초콜릿, 커피, 젤리"></div>
-        <div class="group"><label>⚡ 나랑 일할 때 참고사항</label><input id="workStyleInput" placeholder="예: 미리미리 / 몰아서 집중"></div>
-        <div class="group"><label>😵 이때 말 걸면 로딩 중</label><input id="tiredTimeInput" placeholder="예: 오후 3시쯤"></div>
-        <div class="group"><label>☕ 쉬는 척하며 하는 것</label><input id="breakTimeInput" placeholder="예: 음악 듣기, 멍때리기"></div>
-        <div class="group"><label>🏃 돈 내고 굳이 힘드는 일</label><input id="exerciseInput" placeholder="예: 산책, 필라테스, 헬스"></div>
+        <div class="group"><label>🎂 생일 <span class="helper">(축하받을 명분이 생기는 날)</span></label><input type="text" id="birthdayInput" placeholder="예: 12월 31일"></div>
+        <div class="group"><label>🍪 좋아하는 간식 <span class="helper">(이거 주면 기분 풀림)</span></label><input id="snackInput" placeholder="예: 초콜릿, 커피, 젤리"></div>
+        <div class="group"><label>⚡ 컨디션 떨어지는 시간대 <span class="helper">(나랑 일할 때 참고사항)</span></label><input id="tiredTimeInput" placeholder="예: 오후 3시쯤"></div>
+        <div class="group"><label>😵 선호하는 점심시간 <span class="helper">(이때 말 걸면 로딩 중)</span></label><input id="lunchTimeInput" placeholder="예: 12시 30분 / 조금 늦게"></div>
+        <div class="group"><label>☕ 취미 및 특기</label><input id="hobbyInput" placeholder="예: 영상 편집, 사진 찍기, 요리"></div>
+        <div class="group"><label>🎧 좋아하는 K-POP 아이돌 또는 음악</label><input id="kpopInput" placeholder="예: BLACKPINK, G-DRAGON, 발라드"></div>
+
+        <div class="group"><label>🌈 기분 전환이 필요할 때 하는 일</label><input id="refreshInput" placeholder="예: 산책, 음악 듣기, 단 거 먹기"></div>
+        <div class="group"><label>🧊 스트레스 받을 때 조용히 보내는 신호</label><input id="stressSignalInput" placeholder="예: 말수가 줄어요 / 갑자기 정리해요"></div>
+        <div class="group"><label>🗣️ 듣기 좋은 말 한마디</label><input id="goodWordsInput" placeholder="예: 천천히 해도 돼요 / 잘하고 있어요"></div>
+        <div class="group"><label>🙅 살짝 피하고 싶은 말 한마디</label><input id="avoidWordsInput" placeholder="예: 왜 아직 안 했어요?"></div>
+        <div class="group"><label>🎁 작은 선물 하나를 받는다면</label><input id="giftInput" placeholder="예: 아이스 아메리카노 / 초콜릿"></div>
+        <div class="group"><label>📱 휴대폰에서 제일 많이 여는 앱</label><input id="appInput" placeholder="예: 인스타그램, 유튜브, 지도"></div>
+        <div class="group"><label>🛋️ 쉬는 날 가장 하고 싶은 일</label><input id="dayOffInput" placeholder="예: 아무것도 안 하기 / 카페 가기"></div>
+        <div class="group"><label>✈️ 갑자기 하루 휴가가 생긴다면</label><input id="suddenHolidayInput" placeholder="예: 바다 보러 가기 / 집에서 자기"></div>
+        <div class="group"><label>🛒 매장에 하나 생겼으면 하는 것</label><input id="wishItemInput" placeholder="예: 간식함 / 좋은 의자 / 작은 냉장고"></div>
+        <div class="group"><label>🤝 같이 일할 때 이렇게 해주면 좋아요</label><input id="teamworkInput" placeholder="예: 미리 말해주기 / 한 번 더 확인해주기"></div>
+
         <div class="group full"><label>📖 사용설명서 한 줄 요약</label><input id="oneLineInput" placeholder="예: 말은 적지만 마음은 따뜻해요"></div>
         <div class="group full">
           <label>다른 직원들이 궁금해한 것</label>
@@ -410,7 +547,7 @@ button,input,select,textarea{font:inherit} button{cursor:pointer}
         </div>
       </div>
     </div>
-    <div class="modal-foot"><button class="ghost" id="profileCancelBtn">취소</button><button class="primary" id="profileSaveBtn">이대로 저장하기</button></div>
+    <div class="modal-foot"><button class="ghost" id="profileCancelBtn">취소</button><button class="primary" id="profileSaveBtn">수정한 문답 저장하기</button></div>
   </div>
 </div>
 
@@ -464,7 +601,36 @@ praise:"칭찬 보관함",
 suggestion:"대나무숲"
 };
 const statusLabel={open:"미처리",progress:"진행 중",done:"완료",hold:"보류"};
+
 let db=null,items={},profiles={},questions={},selected="ALL",currentCat="all";
+
+const profileGridEl=document.getElementById("profileGrid");
+const profileModalEl=document.getElementById("profileModal");
+const profileDetailModalEl=document.getElementById("profileDetailModal");
+const profileDetailContentEl=document.getElementById("profileDetailContent");
+const profileStaffInputEl=document.getElementById("profileStaffInput");
+const profilePinInputEl=document.getElementById("profilePinInput");
+const profilePhotoInputEl=document.getElementById("profilePhotoInput");
+const profilePhotoPreviewEl=document.getElementById("profilePhotoPreview");
+const birthdayInputEl=document.getElementById("birthdayInput");
+const snackInputEl=document.getElementById("snackInput");
+const tiredTimeInputEl=document.getElementById("tiredTimeInput");
+const lunchTimeInputEl=document.getElementById("lunchTimeInput");
+const hobbyInputEl=document.getElementById("hobbyInput");
+const kpopInputEl=document.getElementById("kpopInput");
+const refreshInputEl=document.getElementById("refreshInput");
+const stressSignalInputEl=document.getElementById("stressSignalInput");
+const goodWordsInputEl=document.getElementById("goodWordsInput");
+const avoidWordsInputEl=document.getElementById("avoidWordsInput");
+const giftInputEl=document.getElementById("giftInput");
+const appInputEl=document.getElementById("appInput");
+const dayOffInputEl=document.getElementById("dayOffInput");
+const suddenHolidayInputEl=document.getElementById("suddenHolidayInput");
+const wishItemInputEl=document.getElementById("wishItemInput");
+const teamworkInputEl=document.getElementById("teamworkInput");
+const oneLineInputEl=document.getElementById("oneLineInput");
+const customAnswerFieldsEl=document.getElementById("customAnswerFields");
+
 
 renderMembers();fillSelects();updateForm();
 try{firebase.initializeApp(firebaseConfig);db=firebase.database();document.getElementById("conn").textContent="Firebase 연결됨";db.ref(DB_PATH).on("value",s=>{items=s.val()||{};renderAll()});db.ref(PROFILE_PATH).on("value",s=>{profiles=s.val()||{};renderProfiles()});db.ref(QUESTION_PATH).on("value",s=>{questions=s.val()||{};renderProfiles()})}catch(e){console.error(e);document.getElementById("conn").textContent="연결 오류"}
@@ -566,7 +732,7 @@ function renderProfiles(){
  const box=document.getElementById("profileGrid"); if(!box)return;
  box.innerHTML=staff.map(s=>{
    const p=profiles[safeKey(s.name)]||{};
-   const summary=p.oneLine||p.workStyle||"아직 사용설명서를 작성하지 않았어요.";
+   const summary=p.oneLine||p.teamwork||p.hobby||"아직 사용설명서를 작성하지 않았어요.";
    return `<div class="profile-card" data-profile-name="${s.name}" style="--pc:${s.color}">
      <div class="profile-top">
        ${p.photoData?`<img class="profile-photo" src="${p.photoData}" alt="${esc(s.short)} 프로필">`:`<div class="profile-photo-fallback">${s.short.slice(0,1)}</div>`}
@@ -592,34 +758,95 @@ function openProfileDetail(name){
     return `<div class="profile-detail-item full"><b>${esc(q)}</b><span>${esc(ans||"아직 답하지 않았어요.")}</span></div>`;
   }).join("");
 
-  profileDetailContent.innerHTML=`
+  profileDetailContentEl.innerHTML=`
     <div class="profile-detail-head">
       ${p.photoData?`<img class="profile-detail-photo" src="${p.photoData}" alt="${esc(s.short)} 프로필">`:`<div class="profile-detail-fallback" style="--detail-color:${s.color}">${s.short.slice(0,1)}</div>`}
       <div><h3>${esc(s.short)}</h3><p>${esc(s.role)}</p></div>
     </div>
     <div class="profile-detail-grid">
-      <div class="profile-detail-item"><b>🎂 케이크 먹을 명분이 생기는 날</b><span>${esc(p.birthday||"아직 비밀")}</span></div>
-      <div class="profile-detail-item"><b>🍪 이거 주면 기분 풀림</b><span>${esc(p.snack||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>⚡ 나랑 일할 때 참고사항</b><span>${esc(p.workStyle||"궁금해요")}</span></div>
-      <div class="profile-detail-item"><b>😵 이때 말 걸면 로딩 중</b><span>${esc(p.tiredTime||"아직 몰라요")}</span></div>
-      <div class="profile-detail-item"><b>☕ 쉬는 척하며 하는 것</b><span>${esc(p.breakTime||"아직 미정")}</span></div>
-      <div class="profile-detail-item"><b>🏃 돈 내고 굳이 힘드는 일</b><span>${esc(p.exercise||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🎂 생일 <small>(축하받을 명분이 생기는 날)</small></b><span>${esc(p.birthday||"아직 비밀")}</span></div>
+      <div class="profile-detail-item"><b>🍪 좋아하는 간식 <small>(이거 주면 기분 풀림)</small></b><span>${esc(p.snack||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>⚡ 컨디션 떨어지는 시간대 <small>(나랑 일할 때 참고사항)</small></b><span>${esc(p.tiredTime||"아직 몰라요")}</span></div>
+      <div class="profile-detail-item"><b>😵 선호하는 점심시간 <small>(이때 말 걸면 로딩 중)</small></b><span>${esc(p.lunchTime||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>☕ 취미 및 특기</b><span>${esc(p.hobby||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🎧 좋아하는 K-POP 아이돌 또는 음악</b><span>${esc(p.kpop||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🌈 기분 전환이 필요할 때 하는 일</b><span>${esc(p.refresh||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🧊 스트레스 받을 때 조용히 보내는 신호</b><span>${esc(p.stressSignal||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🗣️ 듣기 좋은 말 한마디</b><span>${esc(p.goodWords||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🙅 살짝 피하고 싶은 말 한마디</b><span>${esc(p.avoidWords||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🎁 작은 선물 하나를 받는다면</b><span>${esc(p.gift||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>📱 휴대폰에서 제일 많이 여는 앱</b><span>${esc(p.app||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🛋️ 쉬는 날 가장 하고 싶은 일</b><span>${esc(p.dayOff||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>✈️ 갑자기 하루 휴가가 생긴다면</b><span>${esc(p.suddenHoliday||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🛒 매장에 하나 생겼으면 하는 것</b><span>${esc(p.wishItem||"아직 미정")}</span></div>
+      <div class="profile-detail-item"><b>🤝 같이 일할 때 이렇게 해주면 좋아요</b><span>${esc(p.teamwork||"아직 미정")}</span></div>
       <div class="profile-detail-item full"><b>📖 사용설명서 한 줄 요약</b><span>${esc(p.oneLine||"아직 작성하지 않았어요.")}</span></div>
       ${custom}
     </div>`;
   activeProfileDetailName=name;
-  profileDetailModal.classList.add("show");
+  profileDetailModalEl.classList.add("show");
 }
 
 function openProfile(name){
- profileStaffInput.value=name||"";
- loadProfileForm(name);
- profileModal.classList.add("show");
+  if(!name)return;
+  profileStaffInputEl.value=name;
+  loadProfileForm(name);
+  profileModalEl.classList.add("show");
+  setTimeout(()=>profilePinInputEl.focus(),120);
 }
+
 function loadProfileForm(name){
- const p=profiles[safeKey(name)]||{};
- birthdayInput.value=p.birthday||"";snackInput.value=p.snack||"";workStyleInput.value=p.workStyle||"";tiredTimeInput.value=p.tiredTime||"";breakTimeInput.value=p.breakTime||"";exerciseInput.value=p.exercise||"";oneLineInput.value=p.oneLine||"";profilePhotoPreview.src=p.photoData||"";profilePhotoPreview.style.display=p.photoData?"block":"none";profilePhotoInput.value="";
- customAnswerFields.innerHTML=Object.entries(questions).map(([id,q])=>`<div class="question-row"><label>${esc(q.text||"질문")}</label><input data-qid="${id}" value="${esc((p.customAnswers||{})[id]||"")}" placeholder="내 답변을 적어주세요"></div>`).join("")||`<div class="helper">아직 추가 질문이 없어요.</div>`;
+  if(!name){
+    birthdayInputEl.value="";
+    snackInputEl.value="";
+    tiredTimeInputEl.value="";
+    lunchTimeInputEl.value="";
+    hobbyInputEl.value="";
+    kpopInputEl.value="";
+    refreshInputEl.value="";
+    stressSignalInputEl.value="";
+    goodWordsInputEl.value="";
+    avoidWordsInputEl.value="";
+    giftInputEl.value="";
+    appInputEl.value="";
+    dayOffInputEl.value="";
+    suddenHolidayInputEl.value="";
+    wishItemInputEl.value="";
+    teamworkInputEl.value="";
+    oneLineInputEl.value="";
+    customAnswerFieldsEl.innerHTML='<div class="helper">직원을 먼저 선택해주세요.</div>';
+    return;
+  }
+
+  const p=profiles[safeKey(name)]||{};
+  birthdayInputEl.value=p.birthday||"";
+  snackInputEl.value=p.snack||"";
+  tiredTimeInputEl.value=p.tiredTime||"";
+  lunchTimeInputEl.value=p.lunchTime||"";
+  hobbyInputEl.value=p.hobby||"";
+  kpopInputEl.value=p.kpop||"";
+  refreshInputEl.value=p.refresh||"";
+  stressSignalInputEl.value=p.stressSignal||"";
+  goodWordsInputEl.value=p.goodWords||"";
+  avoidWordsInputEl.value=p.avoidWords||"";
+  giftInputEl.value=p.gift||"";
+  appInputEl.value=p.app||"";
+  dayOffInputEl.value=p.dayOff||"";
+  suddenHolidayInputEl.value=p.suddenHoliday||"";
+  wishItemInputEl.value=p.wishItem||"";
+  teamworkInputEl.value=p.teamwork||"";
+  oneLineInputEl.value=p.oneLine||"";
+  profilePinInputEl.value="";
+  profilePhotoPreviewEl.src=p.photoData||"";
+  profilePhotoPreviewEl.style.display=p.photoData?"block":"none";
+  profilePhotoInputEl.value="";
+
+  customAnswerFieldsEl.innerHTML=Object.entries(questions).map(([id,q])=>`
+    <div class="question-row">
+      <label>${esc(q.text||"질문")}</label>
+      <input data-qid="${id}" value="${esc((p.customAnswers||{})[id]||"")}" placeholder="여기에 내 답변을 적어주세요">
+    </div>
+  `).join("")||'<div class="helper">아직 추가 질문이 없어요. 새 질문을 만들면 여기에 나타납니다.</div>';
 }
 
 function resizeImageFile(file,maxSize=420,quality=.82){
@@ -643,16 +870,78 @@ function resizeImageFile(file,maxSize=420,quality=.82){
 }
 
 async function saveProfile(){
- const name=profileStaffInput.value,pin=profilePinInput.value,s=staff.find(x=>x.name===name);
- if(!s||s.pin!==pin){alert("직원 이름과 PIN이 일치하지 않습니다.");return}
- const customAnswers={};document.querySelectorAll("#customAnswerFields input[data-qid]").forEach(i=>customAnswers[i.dataset.qid]=i.value.trim());
- let photoData=(profiles[safeKey(name)]||{}).photoData||"";
- const file=profilePhotoInput.files[0];
- if(file){
-   try{photoData=await resizeImageFile(file)}catch(e){alert("사진을 불러오지 못했습니다.");return}
- }
- db.ref(`${PROFILE_PATH}/${safeKey(name)}`).set({name,photoData,birthday:birthdayInput.value.trim(),snack:snackInput.value.trim(),workStyle:workStyleInput.value.trim(),tiredTime:tiredTimeInput.value.trim(),breakTime:breakTimeInput.value.trim(),exercise:exerciseInput.value.trim(),oneLine:oneLineInput.value.trim(),customAnswers,updatedAt:Date.now()}).then(()=>{profileModal.classList.remove("show");profilePinInput.value="";toastMsg("내 사용설명서가 저장됐어요 ✨")})
+  const name=profileStaffInputEl.value;
+  const pin=profilePinInputEl.value;
+  const s=staff.find(x=>x.name===name);
+
+  if(!name){
+    alert("수정할 직원을 선택해주세요.");
+    return;
+  }
+  if(!s||s.pin!==pin){
+    alert("직원 이름과 PIN이 일치하지 않습니다.");
+    profilePinInputEl.focus();
+    return;
+  }
+  if(!db){
+    alert("Firebase 연결을 확인해주세요.");
+    return;
+  }
+
+  const customAnswers={};
+  document.querySelectorAll("#customAnswerFields input[data-qid]").forEach(input=>{
+    customAnswers[input.dataset.qid]=input.value.trim();
+  });
+
+  let photoData=(profiles[safeKey(name)]||{}).photoData||"";
+  const file=profilePhotoInputEl.files[0];
+  if(file){
+    try{
+      photoData=await resizeImageFile(file);
+    }catch(error){
+      alert("사진을 불러오지 못했습니다.");
+      return;
+    }
+  }
+
+  const updatedProfile={
+    name,
+    photoData,
+    birthday:birthdayInputEl.value.trim(),
+    snack:snackInputEl.value.trim(),
+    tiredTime:tiredTimeInputEl.value.trim(),
+    lunchTime:lunchTimeInputEl.value.trim(),
+    hobby:hobbyInputEl.value.trim(),
+    kpop:kpopInputEl.value.trim(),
+    refresh:refreshInputEl.value.trim(),
+    stressSignal:stressSignalInputEl.value.trim(),
+    goodWords:goodWordsInputEl.value.trim(),
+    avoidWords:avoidWordsInputEl.value.trim(),
+    gift:giftInputEl.value.trim(),
+    app:appInputEl.value.trim(),
+    dayOff:dayOffInputEl.value.trim(),
+    suddenHoliday:suddenHolidayInputEl.value.trim(),
+    wishItem:wishItemInputEl.value.trim(),
+    teamwork:teamworkInputEl.value.trim(),
+    oneLine:oneLineInputEl.value.trim(),
+    customAnswers,
+    updatedAt:Date.now()
+  };
+
+  try{
+    await db.ref(`${PROFILE_PATH}/${safeKey(name)}`).set(updatedProfile);
+    profiles[safeKey(name)]=updatedProfile;
+    renderProfiles();
+    profileModalEl.classList.remove("show");
+    profilePinInputEl.value="";
+    toastMsg("수정한 문답이 저장됐어요 ✨");
+    openProfileDetail(name);
+  }catch(error){
+    console.error(error);
+    alert("저장하지 못했습니다. Firebase 설정을 확인해주세요.");
+  }
 }
+
 function saveQuestion(){
  const author=questionAuthorInput.value,pin=questionPinInput.value,text=questionTextInput.value.trim(),s=staff.find(x=>x.name===author);
  if(!s||s.pin!==pin){alert("작성자 이름과 PIN이 일치하지 않습니다.");return}
@@ -670,38 +959,52 @@ document.querySelectorAll(".quick-card").forEach(b=>b.addEventListener("click",(
 newBtn.addEventListener("click",openModal);closeBtn.addEventListener("click",closeModal);cancelBtn.addEventListener("click",closeModal);saveBtn.addEventListener("click",saveItem);catInput.addEventListener("change",updateForm);search.addEventListener("input",renderList);statusFilter.addEventListener("change",renderList);priorityFilter.addEventListener("change",renderList);modal.addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
 
 
-profileGrid.addEventListener("click",e=>{
-  const editBtn=e.target.closest("[data-edit-profile]");
-  if(editBtn){e.stopPropagation();openProfile(editBtn.dataset.editProfile);return}
-  const card=e.target.closest("[data-profile-name]");
+profileGridEl.addEventListener("click",event=>{
+  const editButton=event.target.closest("[data-edit-profile]");
+  if(editButton){
+    event.preventDefault();
+    event.stopPropagation();
+    openProfile(editButton.dataset.editProfile);
+    return;
+  }
+  const card=event.target.closest("[data-profile-name]");
   if(card)openProfileDetail(card.dataset.profileName);
 });
-profileDetailCloseBtn.addEventListener("click",()=>profileDetailModal.classList.remove("show"));
-profileDetailDoneBtn.addEventListener("click",()=>profileDetailModal.classList.remove("show"));
-profileDetailEditBtn.addEventListener("click",()=>{
-  profileDetailModal.classList.remove("show");
-  if(activeProfileDetailName)openProfile(activeProfileDetailName);
+
+document.getElementById("profileDetailCloseBtn").addEventListener("click",()=>profileDetailModalEl.classList.remove("show"));
+document.getElementById("profileDetailDoneBtn").addEventListener("click",()=>profileDetailModalEl.classList.remove("show"));
+document.getElementById("profileDetailEditBtn").addEventListener("click",()=>{
+  const name=activeProfileDetailName;
+  profileDetailModalEl.classList.remove("show");
+  if(name)openProfile(name);
 });
-profileDetailModal.addEventListener("click",e=>{
-  if(e.target.id==="profileDetailModal")profileDetailModal.classList.remove("show");
+profileDetailModalEl.addEventListener("click",event=>{
+  if(event.target===profileDetailModalEl)profileDetailModalEl.classList.remove("show");
 });
 
-profileStaffInput.addEventListener("change",()=>loadProfileForm(profileStaffInput.value));
+profileStaffInputEl.addEventListener("change",()=>loadProfileForm(profileStaffInputEl.value));
+profilePhotoInputEl.addEventListener("change",async()=>{
+  const file=profilePhotoInputEl.files[0];
+  if(!file)return;
+  try{
+    profilePhotoPreviewEl.src=await resizeImageFile(file,240,.8);
+    profilePhotoPreviewEl.style.display="block";
+  }catch(error){
+    alert("사진 미리보기를 만들지 못했습니다.");
+  }
+});
 
-profilePhotoInput.addEventListener("change",async()=>{
- const file=profilePhotoInput.files[0];
- if(!file)return;
- try{profilePhotoPreview.src=await resizeImageFile(file,240,.8);profilePhotoPreview.style.display="block"}catch(e){}
+document.getElementById("profileCloseBtn").addEventListener("click",()=>profileModalEl.classList.remove("show"));
+document.getElementById("profileCancelBtn").addEventListener("click",()=>profileModalEl.classList.remove("show"));
+document.getElementById("profileSaveBtn").addEventListener("click",saveProfile);
+profileModalEl.addEventListener("click",event=>{
+  if(event.target===profileModalEl)profileModalEl.classList.remove("show");
 });
 
 newQuestionBtn.addEventListener("click",()=>questionModal.classList.add("show"));
-profileCloseBtn.addEventListener("click",()=>profileModal.classList.remove("show"));
-profileCancelBtn.addEventListener("click",()=>profileModal.classList.remove("show"));
-profileSaveBtn.addEventListener("click",saveProfile);
 questionCloseBtn.addEventListener("click",()=>questionModal.classList.remove("show"));
 questionCancelBtn.addEventListener("click",()=>questionModal.classList.remove("show"));
 questionSaveBtn.addEventListener("click",saveQuestion);
-profileModal.addEventListener("click",e=>{if(e.target.id==="profileModal")profileModal.classList.remove("show")});
 questionModal.addEventListener("click",e=>{if(e.target.id==="questionModal")questionModal.classList.remove("show")});
 
 </script>
