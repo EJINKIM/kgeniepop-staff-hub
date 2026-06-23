@@ -631,6 +631,98 @@ const teamworkInputEl=document.getElementById("teamworkInput");
 const oneLineInputEl=document.getElementById("oneLineInput");
 const customAnswerFieldsEl=document.getElementById("customAnswerFields");
 
+const members=document.getElementById("members");
+const allBtn=document.getElementById("allBtn");
+const menu=document.getElementById("menu");
+const boardTitle=document.getElementById("boardTitle");
+const boardDesc=document.getElementById("boardDesc");
+const search=document.getElementById("search");
+const statusFilter=document.getElementById("statusFilter");
+const priorityFilter=document.getElementById("priorityFilter");
+const list=document.getElementById("list");
+const cAll=document.getElementById("cAll");
+const cDirective=document.getElementById("cDirective");
+const cHandover=document.getElementById("cHandover");
+const cSupply=document.getElementById("cSupply");
+const cInventory=document.getElementById("cInventory");
+const cPraise=document.getElementById("cPraise");
+const cSuggestion=document.getElementById("cSuggestion");
+const todayCount=document.getElementById("todayCount");
+const progressCount=document.getElementById("progressCount");
+const mineCount=document.getElementById("mineCount");
+const urgentCount=document.getElementById("urgentCount");
+const todayTitle=document.getElementById("todayTitle");
+const todayText=document.getElementById("todayText");
+const viewLabel=document.getElementById("viewLabel");
+
+const modal=document.getElementById("modal");
+const newBtn=document.getElementById("newBtn");
+const closeBtn=document.getElementById("closeBtn");
+const cancelBtn=document.getElementById("cancelBtn");
+const saveBtn=document.getElementById("saveBtn");
+const catInput=document.getElementById("catInput");
+const authorInput=document.getElementById("authorInput");
+const targetInput=document.getElementById("targetInput");
+const priorityInput=document.getElementById("priorityInput");
+const dueInput=document.getElementById("dueInput");
+const titleInput=document.getElementById("titleInput");
+const contentInput=document.getElementById("contentInput");
+const statusInput=document.getElementById("statusInput");
+const pinInput=document.getElementById("pinInput");
+const authorGroup=document.getElementById("authorGroup");
+const pinGroup=document.getElementById("pinGroup");
+const helper=document.getElementById("helper");
+const toast=document.getElementById("toast");
+
+const profileGrid=document.getElementById("profileGrid");
+const profileModal=document.getElementById("profileModal");
+const profileDetailModal=document.getElementById("profileDetailModal");
+const profileDetailContent=document.getElementById("profileDetailContent");
+const profileStaffInput=document.getElementById("profileStaffInput");
+const profilePinInput=document.getElementById("profilePinInput");
+const profilePhotoInput=document.getElementById("profilePhotoInput");
+const profilePhotoPreview=document.getElementById("profilePhotoPreview");
+const birthdayInput=document.getElementById("birthdayInput");
+const snackInput=document.getElementById("snackInput");
+const tiredTimeInput=document.getElementById("tiredTimeInput");
+const lunchTimeInput=document.getElementById("lunchTimeInput");
+const hobbyInput=document.getElementById("hobbyInput");
+const kpopInput=document.getElementById("kpopInput");
+const refreshInput=document.getElementById("refreshInput");
+const stressSignalInput=document.getElementById("stressSignalInput");
+const goodWordsInput=document.getElementById("goodWordsInput");
+const avoidWordsInput=document.getElementById("avoidWordsInput");
+const giftInput=document.getElementById("giftInput");
+const appInput=document.getElementById("appInput");
+const dayOffInput=document.getElementById("dayOffInput");
+const suddenHolidayInput=document.getElementById("suddenHolidayInput");
+const wishItemInput=document.getElementById("wishItemInput");
+const teamworkInput=document.getElementById("teamworkInput");
+const oneLineInput=document.getElementById("oneLineInput");
+const customAnswerFields=document.getElementById("customAnswerFields");
+const profileCloseBtn=document.getElementById("profileCloseBtn");
+const profileCancelBtn=document.getElementById("profileCancelBtn");
+const profileSaveBtn=document.getElementById("profileSaveBtn");
+const profileDetailCloseBtn=document.getElementById("profileDetailCloseBtn");
+const profileDetailDoneBtn=document.getElementById("profileDetailDoneBtn");
+const profileDetailEditBtn=document.getElementById("profileDetailEditBtn");
+
+const questionModal=document.getElementById("questionModal");
+const newQuestionBtn=document.getElementById("newQuestionBtn");
+const questionCloseBtn=document.getElementById("questionCloseBtn");
+const questionCancelBtn=document.getElementById("questionCancelBtn");
+const questionSaveBtn=document.getElementById("questionSaveBtn");
+const questionAuthorInput=document.getElementById("questionAuthorInput");
+const questionPinInput=document.getElementById("questionPinInput");
+const questionTextInput=document.getElementById("questionTextInput");
+
+
+
+window.addEventListener("error",event=>{
+  console.error("페이지 오류:",event.error||event.message);
+  const status=document.getElementById("conn");
+  if(status)status.textContent="페이지 오류 발생";
+});
 
 renderMembers();fillSelects();updateForm();
 try{firebase.initializeApp(firebaseConfig);db=firebase.database();document.getElementById("conn").textContent="Firebase 연결됨";db.ref(DB_PATH).on("value",s=>{items=s.val()||{};renderAll()});db.ref(PROFILE_PATH).on("value",s=>{profiles=s.val()||{};renderProfiles()});db.ref(QUESTION_PATH).on("value",s=>{questions=s.val()||{};renderProfiles()})}catch(e){console.error(e);document.getElementById("conn").textContent="연결 오류"}
@@ -643,7 +735,7 @@ function fillSelects(){
  const opts=staff.map(s=>`<option value="${s.name}">${s.name}</option>`).join("");
  authorInput.innerHTML=`<option value="">작성자 선택</option>${opts}`;
  targetInput.innerHTML=`<option value="ALL">전체 직원</option>${opts}`;
- profileStaffInput.innerHTML=`<option value="">누구 사용설명서인가요?</option>${opts}`;
+ profileStaffInputEl.innerHTML=`<option value="">누구 사용설명서인가요?</option>${opts}`;
  questionAuthorInput.innerHTML=`<option value="">작성자 선택</option>${opts}`;
 }
 function visible(){
