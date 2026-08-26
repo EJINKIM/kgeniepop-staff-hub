@@ -21,7 +21,7 @@ h1{margin:0;font-size:24px;letter-spacing:-.03em} .desc{margin-top:7px;color:var
 .grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(380px,.9fr);gap:16px}
 .left{display:flex;flex-direction:column;gap:14px}.imagebox{border:1px solid var(--line);border-radius:17px;padding:12px;background:#fcfcfd}
 .drop{min-height:330px;height:48vh;max-height:580px;border:2px dashed #d5dae3;border-radius:15px;display:flex;align-items:center;justify-content:center;overflow:auto;background:#fafbfd;cursor:pointer}
-.drop img{max-width:100%;max-height:100%;object-fit:contain;display:block}.hint{text-align:center;color:var(--muted);padding:22px}.hint b{display:block;color:#3b424b;margin-bottom:7px}
+.drop img{max-width:100%;max-height:100%;object-fit:contain;display:block;transition:transform .18s ease, box-shadow .18s ease;cursor:zoom-in}.drop:hover img{transform:scale(1.08);box-shadow:0 16px 40px rgba(0,0,0,.16);z-index:3}.drop.zoomed{overflow:auto;align-items:flex-start;justify-content:flex-start}.drop.zoomed img{max-width:none;max-height:none;width:180%;transform:none;cursor:zoom-out}.hint{text-align:center;color:var(--muted);padding:22px}.hint b{display:block;color:#3b424b;margin-bottom:7px}
 .img-actions{display:flex;gap:8px;margin-top:9px}.mini{border:0;border-radius:10px;padding:9px 12px;background:#f0f2f5;font-weight:800;cursor:pointer}
 .panel{border:1px solid var(--line);border-radius:17px;padding:14px;background:#fcfcfd}.mode-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.mode{border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:#fff;font-weight:850;cursor:pointer}.mode.active.done{background:var(--blue);border-color:var(--blueb)}.mode.active.stay{background:var(--green);border-color:var(--greenb)}.mode.active.normal{background:var(--pink);border-color:var(--pinkb)}.mode.active.clear{background:#f0f2f4}
 .rooms{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.room{position:relative;border:1px solid #dce1e8;border-radius:14px;background:#fff;min-height:54px;font-weight:900;font-size:16px;cursor:pointer}.room.done{background:var(--blue);border-color:var(--blueb)}.room.done:after{content:'*';position:absolute;right:9px;top:5px;color:#d33d53;font-size:19px}.room.stay{background:var(--green);border-color:var(--greenb)}.room.stay:after{content:'연박';position:absolute;right:7px;top:6px;font-size:9px;color:#548441}.room.normal{background:var(--pink);border-color:var(--pinkb)}.room.normal:after{content:'호실';position:absolute;right:7px;top:6px;font-size:9px;color:#9b5b72}
@@ -39,7 +39,7 @@ h1{margin:0;font-size:24px;letter-spacing:-.03em} .desc{margin-top:7px;color:var
 </header>
 
 <section class="work">
- <div class="work-title">① 인스펙 완료 객실</div>
+ <div class="work-title">인스펙객실현황에 올리기</div>
  <div class="work-sub">이 구역에는 <b>인스펙 완료 객실 사진</b>만 붙여넣기 · 하늘색 셀 + 빨간 객실번호는 <b>*</b> · 연박은 연박으로 분리</div>
  <div class="grid">
   <div class="left">
@@ -50,7 +50,7 @@ h1{margin:0;font-size:24px;letter-spacing:-.03em} .desc{margin-top:7px;color:var
    </div>
    <div class="panel">
     <div class="mode-row" data-booth="inspect">
-      <button class="mode done active" data-action="done">⭐ 인스펙 완료 *</button>
+      <button class="mode done active" data-action="done">⭐ 인스펙 선순위</button>
       <button class="mode stay" data-action="stay">🌿 연박</button>
       <button class="mode clear" data-action="clear">↩ 해제</button>
     </div>
@@ -67,7 +67,7 @@ h1{margin:0;font-size:24px;letter-spacing:-.03em} .desc{margin-top:7px;color:var
 </section>
 
 <section class="work">
- <div class="work-title">② 호실(인0·침0) 더/베/완</div>
+ <div class="work-title">객실정비방에 올리기</div>
  <div class="work-sub">이 구역에는 <b>호실·더/베/완용 사진</b>만 붙여넣기 · 일반 호실과 연박을 따로 선택</div>
  <div class="grid">
   <div class="left">
@@ -115,14 +115,14 @@ document.querySelectorAll('[data-reset]').forEach(b=>b.onclick=()=>{const k=b.da
 document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async()=>{const el=$(b.dataset.copy);try{await navigator.clipboard.writeText(el.value)}catch{el.select();document.execCommand('copy')}const t=b.textContent;b.textContent='복사 완료 ✓';setTimeout(()=>b.textContent=t,1000)});
 $('date').onchange=()=>{renderAuto('inspect');renderAuto('roomlist')};
 
-function setupImage(n){const drop=$('drop'+n),file=$('file'+n);function show(f){if(!f||!f.type.startsWith('image/'))return;const rd=new FileReader();rd.onload=()=>drop.innerHTML=`<img src="${rd.result}" alt="참고 사진">`;rd.readAsDataURL(f)}
+function setupImage(n){const drop=$('drop'+n),file=$('file'+n);function bindZoom(){const img=drop.querySelector('img');if(!img)return;img.onclick=(e)=>{e.stopPropagation();drop.classList.toggle('zoomed')}} function show(f){if(!f||!f.type.startsWith('image/'))return;const rd=new FileReader();rd.onload=()=>{drop.classList.remove('zoomed');drop.innerHTML=`<img src="${rd.result}" alt="참고 사진">`;bindZoom()};rd.readAsDataURL(f)}
  document.querySelector(`[data-choose="${n}"]`).onclick=()=>file.click();drop.onclick=()=>file.click();file.onchange=e=>show(e.target.files[0]);
  drop.addEventListener('dragover',e=>e.preventDefault());drop.addEventListener('drop',e=>{e.preventDefault();show(e.dataTransfer.files[0])});
  document.querySelector(`[data-clearimg="${n}"]`).onclick=()=>{file.value='';drop.innerHTML=`<div class="hint"><b>📷 ${n==='1'?'인스펙':'호실'} 사진 붙여넣기</b>이 박스를 클릭한 뒤 Ctrl+V 하거나 사진을 선택하세요.</div>`};
  drop.tabIndex=0;drop.addEventListener('focus',()=>{activeDrop=n});
 }
 let activeDrop='1';setupImage('1');setupImage('2');
-document.addEventListener('paste',e=>{for(const it of e.clipboardData.items){if(it.type.startsWith('image/')){const f=it.getAsFile();const drop=$('drop'+activeDrop);const rd=new FileReader();rd.onload=()=>drop.innerHTML=`<img src="${rd.result}" alt="참고 사진">`;rd.readAsDataURL(f);break}}});
+document.addEventListener('paste',e=>{for(const it of e.clipboardData.items){if(it.type.startsWith('image/')){const f=it.getAsFile();const drop=$('drop'+activeDrop);const rd=new FileReader();rd.onload=()=>{drop.classList.remove('zoomed');drop.innerHTML=`<img src="${rd.result}" alt="참고 사진">`;const img=drop.querySelector('img');img.onclick=(ev)=>{ev.stopPropagation();drop.classList.toggle('zoomed')}};rd.readAsDataURL(f);break}}});
 renderRooms('inspect');renderRooms('roomlist');renderAuto('inspect');renderAuto('roomlist');
 </script>
 </body>
