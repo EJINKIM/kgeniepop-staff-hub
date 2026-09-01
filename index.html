@@ -23,8 +23,8 @@ h1{margin:0;font-size:24px;letter-spacing:-.03em} .desc{margin-top:7px;color:var
 .drop{min-height:330px;height:48vh;max-height:580px;border:2px dashed #d5dae3;border-radius:15px;display:flex;align-items:center;justify-content:center;overflow:auto;background:#fafbfd;cursor:pointer}
 .drop img{max-width:100%;max-height:100%;object-fit:contain;display:block;transition:transform .18s ease, box-shadow .18s ease;cursor:zoom-in}.drop:hover img{transform:scale(1.08);box-shadow:0 16px 40px rgba(0,0,0,.16);z-index:3}.drop.zoomed{overflow:auto;align-items:flex-start;justify-content:flex-start}.drop.zoomed img{max-width:none;max-height:none;width:180%;transform:none;cursor:zoom-out}.hint{text-align:center;color:var(--muted);padding:22px}.hint b{display:block;color:#3b424b;margin-bottom:7px}
 .img-actions{display:flex;gap:8px;margin-top:9px}.mini{border:0;border-radius:10px;padding:9px 12px;background:#f0f2f5;font-weight:800;cursor:pointer}
-.panel{border:1px solid var(--line);border-radius:17px;padding:14px;background:#fcfcfd}.mode-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.mode{border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:#fff;font-weight:850;cursor:pointer}.mode.active.done{background:var(--blue);border-color:var(--blueb)}.mode.active.stay{background:var(--green);border-color:var(--greenb)}.mode.active.normal{background:var(--pink);border-color:var(--pinkb)}.mode.active.clear{background:#f0f2f4}
-.rooms{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.room{position:relative;border:1px solid #dce1e8;border-radius:14px;background:#fff;min-height:54px;font-weight:900;font-size:16px;cursor:pointer}.room.done{background:var(--blue);border-color:var(--blueb)}.room.done:after{content:'*';position:absolute;right:9px;top:5px;color:#d33d53;font-size:19px}.room.stay{background:var(--green);border-color:var(--greenb)}.room.stay:after{content:'연박';position:absolute;right:7px;top:6px;font-size:9px;color:#548441}.room.normal{background:var(--pink);border-color:var(--pinkb)}.room.normal:after{content:'호실';position:absolute;right:7px;top:6px;font-size:9px;color:#9b5b72}
+.panel{border:1px solid var(--line);border-radius:17px;padding:14px;background:#fcfcfd}.mode-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.mode{border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:#fff;font-weight:850;cursor:pointer}.mode.active.inout{background:var(--blue);border-color:var(--blueb);color:#d8243b}.mode.active.checkout{background:var(--blue);border-color:var(--blueb);color:#111}.mode.active.arrival{background:#ffe6cf;border-color:#efbe92}.mode.active.vacant1,.mode.active.vacant2,.mode.active.vacant3{background:#fff;border-color:#bfc5cc;box-shadow:inset 0 0 0 1px #8b929c}.mode.active.stay{background:var(--green);border-color:var(--greenb)}.mode.active.normal{background:var(--pink);border-color:var(--pinkb)}.mode.active.clear{background:#f0f2f4}
+.count-status{margin:0 0 11px;padding:10px 12px;border-radius:12px;background:#fff4f4;border:1px solid #f0caca;color:#a43b3b;font-size:12px;font-weight:800;line-height:1.5}.count-status.complete{background:#eef8e8;border-color:#bddcad;color:#3f7635}.rooms{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.room{position:relative;border:1px solid #dce1e8;border-radius:14px;background:#fff;min-height:54px;font-weight:900;font-size:16px;cursor:pointer;color:#111}.room.inout{background:var(--blue);border-color:var(--blueb);color:#e1263f}.room.inout:after{content:'*';position:absolute;right:9px;top:4px;color:#e1263f;font-size:20px}.room.checkout{background:var(--blue);border-color:var(--blueb);color:#111}.room.checkout:after{content:'체크아웃';position:absolute;right:7px;top:6px;font-size:9px;color:#4c6f92}.room.arrival{background:#ffe6cf;border-color:#efbe92;color:#111}.room.arrival:after{content:'*';position:absolute;right:9px;top:4px;color:#d33d53;font-size:20px}.room.vacant1,.room.vacant2,.room.vacant3{background:#fff;border-color:#bfc5cc;color:#111}.room.vacant1:after{content:'공실1차';position:absolute;right:7px;top:6px;font-size:9px;color:#666}.room.vacant2:after{content:'공실2차';position:absolute;right:7px;top:6px;font-size:9px;color:#666}.room.vacant3:after{content:'공실3차';position:absolute;right:7px;top:6px;font-size:9px;color:#666}.room.stay{background:var(--green);border-color:var(--greenb)}.room.stay:after{content:'연박';position:absolute;right:7px;top:6px;font-size:9px;color:#548441}.room.normal{background:var(--pink);border-color:var(--pinkb)}.room.normal:after{content:'호실';position:absolute;right:7px;top:6px;font-size:9px;color:#9b5b72}
 .right{display:flex;flex-direction:column}.label{font-size:12px;color:var(--muted);margin:2px 0 8px 2px}.output{width:100%;flex:1;min-height:610px;border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff;font:14px/1.7 "SFMono-Regular",Consolas,"Noto Sans Mono CJK KR",monospace;resize:vertical;color:#222}.note{font-size:11px;color:#8b929c;line-height:1.5;margin-top:8px}
 .copyrow{display:flex;gap:8px;margin-top:10px}.copy{flex:1;border:0;border-radius:12px;padding:11px 13px;background:#252a31;color:white;font-weight:900;cursor:pointer}.reset{border:0;border-radius:12px;padding:11px 14px;background:#eef0f3;font-weight:850;cursor:pointer}
 @media(max-width:900px){header{flex-direction:column;align-items:stretch}.grid{grid-template-columns:1fr}.output{min-height:330px}.drop{height:42vh}.rooms{grid-template-columns:repeat(4,1fr)}}
@@ -40,7 +40,7 @@ h1{margin:0;font-size:24px;letter-spacing:-.03em} .desc{margin-top:7px;color:var
 
 <section class="work">
  <div class="work-title">인스펙객실현황에 올리기</div>
- <div class="work-sub">이 구역에는 <b>인스펙 완료 객실 사진</b>만 붙여넣기 · 하늘색 셀 + 빨간 객실번호는 <b>*</b> · 연박은 연박으로 분리</div>
+ <div class="work-sub">이 구역에는 <b>인스펙 완료 객실 사진</b>만 붙여넣기 · 인/아웃=파란색+빨간글씨+*, 체크아웃=파란색+검정글씨(별표 없음), 뒤에 체크인=살구색+*, 공실=흰색, 연박=연두색</div>
  <div class="grid">
   <div class="left">
    <div class="imagebox">
@@ -50,10 +50,16 @@ h1{margin:0;font-size:24px;letter-spacing:-.03em} .desc{margin-top:7px;color:var
    </div>
    <div class="panel">
     <div class="mode-row" data-booth="inspect">
-      <button class="mode done active" data-action="done">⭐ 인스펙 선순위</button>
+      <button class="mode inout active" data-action="inout">🟦 인/아웃 *</button>
+      <button class="mode checkout" data-action="checkout">🟦 체크아웃</button>
+      <button class="mode arrival" data-action="arrival">🍑 뒤에 체크인 있는 방</button>
+      <button class="mode vacant1" data-action="vacant1">⬜ 공실 1차</button>
+      <button class="mode vacant2" data-action="vacant2">⬜ 공실 2차</button>
+      <button class="mode vacant3" data-action="vacant3">⬜ 공실 3차</button>
       <button class="mode stay" data-action="stay">🌿 연박</button>
       <button class="mode clear" data-action="clear">↩ 해제</button>
     </div>
+    <div id="inspectCount" class="count-status">선택 0/13</div>
     <div id="rooms1" class="rooms"></div>
    </div>
   </div>
@@ -96,15 +102,25 @@ h1{margin:0;font-size:24px;letter-spacing:-.03em} .desc{margin-top:7px;color:var
 </div>
 <script>
 const ROOMS=['101','102','201','202','203','204','205','301','302','303','304','305','401'];
-const state={inspect:{selected:'done',rooms:{}},roomlist:{selected:'normal',rooms:{}}};
+const state={inspect:{selected:'inout',rooms:{}},roomlist:{selected:'normal',rooms:{}}};
 const $=id=>document.getElementById(id);
 const now=new Date(); $('date').value=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
 function md(){const [,m,d]=$('date').value.split('-');return `${Number(m)}/${Number(d)}`}
-function renderRooms(kind){const box=$(kind==='inspect'?'rooms1':'rooms2');box.innerHTML='';ROOMS.forEach(r=>{const b=document.createElement('button');b.className='room';b.textContent=r;const s=state[kind].rooms[r];if(s)b.classList.add(s);b.onclick=()=>{const a=state[kind].selected;if(a==='clear')delete state[kind].rooms[r];else state[kind].rooms[r]=a;renderRooms(kind);renderAuto(kind)};box.appendChild(b)})}
+function renderRooms(kind){const box=$(kind==='inspect'?'rooms1':'rooms2');box.innerHTML='';ROOMS.forEach(r=>{const b=document.createElement('button');b.className='room';b.textContent=r;const s=state[kind].rooms[r];if(s)b.classList.add(s);b.onclick=()=>{const a=state[kind].selected;if(a==='clear')delete state[kind].rooms[r];else state[kind].rooms[r]=a;renderRooms(kind);renderAuto(kind)};box.appendChild(b)});if(kind==='inspect')renderInspectCount()}
+function renderInspectCount(){const selected=ROOMS.filter(r=>state.inspect.rooms[r]).length;const missing=ROOMS.filter(r=>!state.inspect.rooms[r]);const el=$('inspectCount');if(selected===ROOMS.length){el.classList.add('complete');el.textContent='✅ 전체 13개 선택 완료 (13/13)';}else{el.classList.remove('complete');el.textContent=`선택 ${selected}/13 · 미선택 ${missing.length}개: ${missing.join(', ')}`;}}
 function renderAuto(kind){
  if(kind==='inspect'){
-   const done=ROOMS.filter(r=>state.inspect.rooms[r]==='done');const stay=ROOMS.filter(r=>state.inspect.rooms[r]==='stay');
-   $('out1').value=`${md()} 인스펙 완료객실(총13개)\n\n${done.map(r=>r+'*').join('\n')}\n\n-----------------------------------\n연박\n${stay.join('\n')}`;
+   const selectedCount=ROOMS.filter(r=>state.inspect.rooms[r]).length;
+   const stay=ROOMS.filter(r=>state.inspect.rooms[r]==='stay');
+   const lines=ROOMS.filter(r=>state.inspect.rooms[r] && state.inspect.rooms[r]!=='stay').map(r=>{
+     const s=state.inspect.rooms[r];
+     if(s==='inout' || s==='arrival') return r+'*';
+     if(s==='vacant1') return r+' (공실1차)';
+     if(s==='vacant2') return r+' (공실2차)';
+     if(s==='vacant3') return r+' (공실3차)';
+     return r; // 체크아웃: 별표 없음
+   });
+   $('out1').value=`${md()} 인스펙 완료객실(총${selectedCount}개)\n\n${lines.join('\n')}\n\n-----------------------------------\n연박\n\n${stay.join('\n')}`;
  }else{
    const normal=ROOMS.filter(r=>state.roomlist.rooms[r]==='normal');const stay=ROOMS.filter(r=>state.roomlist.rooms[r]==='stay');
    $('out2').value=`${md()} 호실(인0.침0) 더/베/완\n\n${normal.join('\n')}\n\n-----------------------------------\n연박\n\n${stay.join('\n')}`;
